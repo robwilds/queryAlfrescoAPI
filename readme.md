@@ -7,10 +7,11 @@ All Crud operations are supported but filtering of specific CRUD operations need
 
 ## PreReqs
 
-python 3.x
-pip 3.x
+python 3.10.5 or greater
+pip 22.04 or greater
 json
 pandas
+python-dotenv
 
 ## Process Flow
 

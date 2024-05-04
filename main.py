@@ -1,9 +1,15 @@
 # this is the main file...all other procedures are called from here
 from queryAlf import runQuery
 import pandas as pd, json
+import os
+from dotenv import load_dotenv
 
-BASE_URL = 'http://rwilds741.alfdemo.com'
-auth = 'ZGVtbzpkZW1v'
+# Load environment variables from the .env file
+load_dotenv()
+
+BASE_URL= os.getenv("BASE_URL")
+auth = os.getenv("auth")
+
 
 def pullGroups():
     groupQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/groups'
@@ -40,6 +46,7 @@ def pullPeopleGroups(personid):
     return data
 
 def main():
+
     #print (pullGroups())
     #print (pullPeople())
 
@@ -47,8 +54,11 @@ def main():
 
     #now pass every people ID and pass to dataframe
     for item in pullPeopleGroups('demo')['list']['entries']:
+        #print (item) #debugging
+
         #print (item['entry']['id'] + ' - ' + str(item['entry']['isRoot']) + ' - ' + item['entry']['displayName'])
-        print(item['displayName'])
+        print(item['entry']['id'])
+
     #now need to merge and output
     
 if __name__ == "__main__":
