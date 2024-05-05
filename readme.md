@@ -12,6 +12,7 @@ pip 22.04 or greater
 json
 pandas
 python-dotenv
+openpyxl
 
 ## Process Flow
 

@@ -46,20 +46,46 @@ def pullPeopleGroups(personid):
     return data
 
 def main():
+    peopleID = []
+    peopleStatus = []
+    groupID = []
+    groupDisplayName = []
+    peopleGroupID = []
+    peopleGroupName = []
 
-    #print (pullGroups())
+    file_name = 'peopleGroups.xlsx'
+
+    #print (pullGroups()) #may not need this pull if merging people to groups
     #print (pullPeople())
 
+    for entry in pullPeople()['list']['entries']:
+        #print (entry['entry']['id'] + ' ' + str(entry['entry']['enabled']))
+
+        #now load each user into a dataframe for People
+        peopleID.append(entry['entry']['id'])
+        peopleStatus.append(entry['entry']['enabled'])
+
     #need to input people into a dataframe
+    #peopleDF = pd.DataFrame([peopleID,peopleStatus]).T
 
-    #now pass every people ID and pass to dataframe
-    for item in pullPeopleGroups('demo')['list']['entries']:
-        #print (item) #debugging
+    #print(peopleDF) #Debug: display people DataFrame
 
-        #print (item['entry']['id'] + ' - ' + str(item['entry']['isRoot']) + ' - ' + item['entry']['displayName'])
-        print(item['entry']['id'])
+    #now loop through each username and pass to pull people groups
+
+
+    for person in peopleID:
+
+        for item in pullPeopleGroups(person)['list']['entries']:
+            #print (item) #debugging
+            #print(person + ' - ' + item['entry']['id']) #debug
+            peopleGroupID.append(person)
+            peopleGroupName.append(item['entry']['id'])
 
     #now need to merge and output
+    peopleGroupDF = pd.DataFrame([peopleGroupID,peopleGroupName]).T
+
+    print (peopleGroupDF)
+    peopleGroupDF.to_excel(file_name)
     
 if __name__ == "__main__":
     main()

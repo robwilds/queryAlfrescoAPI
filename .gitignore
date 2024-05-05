@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# excel files
+.xlsx
+.xls
+
 # C extensions
 *.so
 
