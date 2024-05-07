@@ -10,7 +10,6 @@ load_dotenv()
 BASE_URL= os.getenv("BASE_URL")
 auth = os.getenv("auth")
 
-
 def pullGroups():
     groupQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/groups'
     name,id = [],[]
@@ -42,7 +41,6 @@ def main():
     file_name = 'peopleGroups.xlsx'
 
     for entry in pullPeople()['list']['entries']:
-        #print (entry['entry']['id'] + ' ' + str(entry['entry']['enabled']))
 
         #now load each user into array for user later
         peopleID.append(entry['entry']['id'])
@@ -53,12 +51,12 @@ def main():
 
         for item in pullPeopleGroups(person)['list']['entries']:
             #print (item) #debugging
-            #print(person + ' - ' + item['entry']['id']) #debug
+            #print(person + ' - ' + item['entry']['id']) #debugging
             peopleGroupID.append(person)
-            peopleGroupStatus.append(peopleStatus[list(peopleID).index(person)])
+            peopleGroupStatus.append(peopleStatus[list(peopleID).index(person)]) #list(poepleid).index(person) will get the person's status for the matching index
             peopleGroupName.append(item['entry']['id'])
 
-    #now need to merge and output
+    #now create the dataframe with pandas
     peopleGroupDF = pd.DataFrame([peopleGroupID,peopleGroupStatus,peopleGroupName]).T
 
     print (peopleGroupDF)
