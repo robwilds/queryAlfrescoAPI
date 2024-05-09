@@ -13,6 +13,8 @@ json
 pandas
 python-dotenv
 openpyxl
+flask
+flask-cors
 
 ## Process Flow
 

@@ -14,20 +14,20 @@ def pullGroups():
     groupQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/groups'
     name,id = [],[]
 
-    print ('query url is: ' + groupQuery + '--->>>>')
+    #print ('query url is: ' + groupQuery + '--->>>>') #debug
     data=runQuery('get',groupQuery,'',auth)
 
     return data
 
 def pullPeople():
     peopleQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/people?skipCount=0&maxItems=100000'
-    print ("pull people URL is: " + peopleQuery)
+    #print ("pull people URL is: " + peopleQuery) #debug
     data = runQuery('get',peopleQuery,'',auth)
     return data
     
 def pullPeopleGroups(personid):
     peopleGroupsQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/people/'+personid+'/groups'
-    print ("pull peopleGroups URL is: " + peopleGroupsQuery)
+    #print ("pull peopleGroups URL is: " + peopleGroupsQuery) #debug
     data = runQuery('get',peopleGroupsQuery,'',auth)
     return data
 
@@ -63,6 +63,7 @@ def main():
     peopleGroupDF.to_excel(file_name)
     #peopleGroupDF.to_html(file_name+'.html')
 
-    
+    return peopleGroupDF
+
 if __name__ == "__main__":
     main()
