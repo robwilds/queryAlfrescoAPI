@@ -39,7 +39,6 @@ def main():
     peopleGroupStatus = []
 
     file_name = 'peopleGroups.xlsx'
-    column_name = ['user', 'status', 'group']
     cols = {0: 'user', 1: 'status',2:'group'}
     for entry in pullPeople()['list']['entries']:
 
