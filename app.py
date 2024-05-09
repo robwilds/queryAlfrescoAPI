@@ -3,7 +3,7 @@ import pandas as pd
 import auditApps
 import auditEntryForNode
 
-from flask import Flask,json,Response,Request
+from flask import Flask,json,Response,request
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ def peoplegroups():
 def auditapps():
     return Response(auditApps.main().to_json(orient = 'records'),mimetype='text/json')
 
-@app.route("/auditentryfornode")
+@app.route("/auditentryfornode", methods=('get', 'post'))
 def auditentryfornode():
-    nodeID = Request.args.get('nodeid')
+    nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
