@@ -39,7 +39,8 @@ def main():
     peopleGroupStatus = []
 
     file_name = 'peopleGroups.xlsx'
-
+    column_name = ['user', 'status', 'group']
+    cols = {0: 'user', 1: 'status',2:'group'}
     for entry in pullPeople()['list']['entries']:
 
         #now load each user into array for user later
@@ -58,9 +59,10 @@ def main():
 
     #now create the dataframe with pandas
     peopleGroupDF = pd.DataFrame([peopleGroupID,peopleGroupStatus,peopleGroupName]).T
+    peopleGroupDF.rename(columns=cols,inplace=True)
 
     print (peopleGroupDF)
-    peopleGroupDF.to_excel(file_name)
+    #peopleGroupDF.to_excel(file_name)
     #peopleGroupDF.to_html(file_name+'.html')
 
     return peopleGroupDF
