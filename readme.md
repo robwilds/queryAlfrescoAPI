@@ -25,7 +25,7 @@ auth= (this is the base64 encode of the user password for example: "xeofhSRgsd")
 
 This project is configure like a micro-service.  Run the app by using the command "flask run" from the command line.  this will fire up the app.py and use the default port of 5000.  you will be able to navigate to an endpoing with http://localhost:5000
 
-## There's are two end points configured:
+## There's are two end points configured
 
 peopleGroups:  this returns a list of all user with associated groups.  filtering will be added later
 
