@@ -27,8 +27,8 @@ This project is configure like a micro-service.  Run the app by using the comman
 
 ## There's are two end points configured
 
-peopleGroups:  this returns a list of all user with associated groups.  filtering will be added later
+/peopleGroups:  this returns a list of all user with associated groups.  filtering will be added later
 
-auditentryfornode/nodeid={nodeid}: this will fetch all audit actions, action dates and reiterate the username for the given nodeid.  nodeid must be provided
+/auditentryfornode/nodeid={nodeid}: this will fetch all audit actions, action dates and reiterate the username for the given nodeid.  nodeid must be provided
 
 
