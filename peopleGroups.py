@@ -61,7 +61,7 @@ def main():
     peopleGroupDF.rename(columns=cols,inplace=True)
 
     print (peopleGroupDF)
-    #peopleGroupDF.to_excel(file_name)
+    peopleGroupDF.to_excel(file_name)
     #peopleGroupDF.to_html(file_name+'.html')
 
     return peopleGroupDF

@@ -29,6 +29,7 @@ def main():
     auditIDDF.rename(columns=cols,inplace=True)
 
     print (auditIDDF)
+    auditIDDF.to_excel('auditApps.xlsx')
     return auditIDDF
 
 if __name__ == "__main__":
