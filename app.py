@@ -21,3 +21,7 @@ def auditapps():
 def auditentryfornode():
     nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
+
+if __name__ == "__main__":
+    # Please do not set debug=True in production
+    app.run(host="0.0.0.0", port=5000, debug=True)
