@@ -15,6 +15,7 @@ appEntryDetails = []
 appEntryDate = []
 appEntryUser = []
 
+
 cols = {0: 'nodeID',1:'auditEntryID',2:'entryDate',3:'details',4:'user'}
 
 def pullAuditEntryForNode(nodeid):
@@ -39,7 +40,15 @@ def pullAuditEntryDetailsForNode(auditentryid):
     return [actionDetailsForNode,actionUserForNode]
 
 def main(nodeid):
-    
+
+    #now clear the temp arrays now!
+    nodeID = []
+    appEntryID = []
+    appEntryDate = []
+    appEntryDetails = []
+    appEntryUser = []
+    auditentryfornodeDF = pd.DataFrame(None)
+
     for entry in pullAuditEntryForNode(nodeid)['list']['entries']:
         #print(nodeid + '-' + str(entry['entry']['id'])) #debug
 
@@ -53,12 +62,17 @@ def main(nodeid):
         appEntryDetails.append(entryDetails) #this is coming from the pullauditdetailsentryfornode
         appEntryUser.append(entryUser) #this is coming from the pullauditdetailsentryfornode
     
+    #print ("size of user array is: " + str(len(appEntryUser))) #debugging
     auditentryfornodeDF = pd.DataFrame([nodeID,appEntryID,appEntryDate,appEntryDetails,appEntryUser]).T
     auditentryfornodeDF.rename(columns=cols,inplace=True)
 
+    
     print (auditentryfornodeDF)
-    auditentryfornodeDF.to_excel('auditentryfornode.xlsx')
+    #auditentryfornodeDF.to_excel('auditentryfornode.xlsx')
+
+
     return auditentryfornodeDF
+
 
 if __name__ == "__main__":
 

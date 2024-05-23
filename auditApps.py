@@ -21,6 +21,8 @@ def pullAuditApps():
 
 def main():
     
+    appID = [] #clear app id now!
+    
     for entry in pullAuditApps()['list']['entries']:
         print(entry['entry']['id'])
         appID.append(entry['entry']['id'])
