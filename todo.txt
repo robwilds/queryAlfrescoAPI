@@ -1,0 +1,3 @@
+read/write to env file:
+https://stackoverflow.com/questions/63484742/how-to-write-in-env-file-from-python-code
+

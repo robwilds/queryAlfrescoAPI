@@ -50,8 +50,8 @@ def main(nodeid):
         nodeID.append(nodeid) #this will be the same nodeid for each audit entry id
         appEntryID.append(entry['entry']['id'])
         appEntryDate.append(entry['entry']['createdAt'])
-        appEntryDetails.append(entryDetails)
-        appEntryUser.append(entryUser)
+        appEntryDetails.append(entryDetails) #this is coming from the pullauditdetailsentryfornode
+        appEntryUser.append(entryUser) #this is coming from the pullauditdetailsentryfornode
     
     auditentryfornodeDF = pd.DataFrame([nodeID,appEntryID,appEntryDate,appEntryDetails,appEntryUser]).T
     auditentryfornodeDF.rename(columns=cols,inplace=True)
