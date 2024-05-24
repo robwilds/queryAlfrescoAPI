@@ -76,5 +76,5 @@ def main(nodeid):
 
 if __name__ == "__main__":
 
-    #nodeid = '7a0eb8ca-8b69-43b4-8062-4b79cbddc750' #testing node on rwilds232
-    main('7a0eb8ca-8b69-43b4-8062-4b79cbddc750') #debug if this file is run directly not from flask app
+    #nodeid = '0e0a3eba-3734-460f-a406-eb79eb6d2955' #testing node on rwilds232
+    main('0e0a3eba-3734-460f-a406-eb79eb6d2955') #debug if this file is run directly not from flask app
