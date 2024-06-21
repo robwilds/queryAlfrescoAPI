@@ -3,9 +3,18 @@ import pandas as pd
 import auditApps
 import auditEntryForNode
 import getRekognitionFiles as grf
-
+import os
+from dotenv import load_dotenv
 from flask import Flask,json,Response,request
 from flask_cors import CORS, cross_origin
+
+# Load environment variables from the .env file
+load_dotenv()
+
+port=os.getenv("port")
+
+#add images (static) folder
+# https://stackoverflow.com/questions/72794072/python-flask-how-to-dynamically-handle-image-and-folder-generation
 
 app = Flask(__name__)
 CORS(app)
@@ -46,4 +55,4 @@ def getRekognitionFiles():
 
 if __name__ == "__main__":
     # Please do not set debug=True in production
-    app.run(host="0.0.0.0", port=5202, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True)
