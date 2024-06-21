@@ -9,12 +9,16 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 CORS(app)
 
+#add swagger: https://stackoverflow.com/questions/46237255/how-to-embed-swagger-ui-into-a-webpage
+
+
 @app.route("/")
 def default():
     return """<h1>Methods available:</h1>
                 <p>peoplegroups</p>
                 <p>auditapps</p>
-                <p>auditentryfornode</p>"""
+                <p>auditentryfornode</p>
+                <p>createFilePlan</p>"""
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -28,6 +32,11 @@ def auditapps():
 def auditentryfornode():
     nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
+
+@app.route("/createFilePlan")
+def createFilePlan():
+    print(NotImplementedError)
+    return NotImplementedError
 
 if __name__ == "__main__":
     # Please do not set debug=True in production

@@ -2,8 +2,8 @@
 import requests,json
 from requests.auth import HTTPBasicAuth
 
-def runQuery(type,queryURL,body,auth):
-  basic = HTTPBasicAuth('demo', 'demo')
+def runQuery(type,queryURL,body,user,passwd):
+  basic = HTTPBasicAuth(user, passwd)
   data = ""
 
   #now run the query to get the raw json data
@@ -11,4 +11,7 @@ def runQuery(type,queryURL,body,auth):
     case 'get':
       data = requests.get(queryURL,auth=basic).json()
       #print(json.dumps(data))
+      return data
+    case 'post':
+      data=requests.post(queryURL,body,auth=basic).json()
       return data
