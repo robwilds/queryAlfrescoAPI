@@ -2,7 +2,7 @@ import peopleGroups
 import pandas as pd
 import auditApps
 import auditEntryForNode
-import getRekognitionFiles
+import getRekognitionFiles as grf
 
 from flask import Flask,json,Response,request
 from flask_cors import CORS, cross_origin
@@ -42,7 +42,7 @@ def createFilePlan():
 
 @app.route("/getrekognitionfiles")
 def getRekognitionFiles():
-    return getRekognitionFiles()
+    return grf.main()
 
 if __name__ == "__main__":
     # Please do not set debug=True in production
