@@ -1,0 +1,8 @@
+** use the values below in a .env file
+
+BASE_URL="http://clive-aws-booth.sales-demohyland.com"
+auth=""
+user=""
+pass=""
+devpath = "../src/assets/"
+prodpath = "../assets/"

@@ -8,6 +8,8 @@ load_dotenv()
 
 BASE_URL= os.getenv("BASE_URL")
 auth = os.getenv("auth")
+user=os.getenv("user")
+passwd=os.getenv("pass")
 
 appID = []
 cols = {0: 'appid'}
@@ -16,7 +18,7 @@ def pullAuditApps():
     auditAppQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/audit-applications'
 
     #print ('query url is: ' + auditAppQuery + '--->>>>') #debug
-    data=runQuery('get',auditAppQuery,'',auth)
+    data=runQuery('get',auditAppQuery,'',user,passwd)
     return data
 
 def main():

@@ -8,6 +8,8 @@ load_dotenv()
 
 BASE_URL= os.getenv("BASE_URL")
 auth = os.getenv("auth")
+user=os.getenv("user")
+passwd=os.getenv("pass")
 
 nodeID = []
 appEntryID = []
@@ -23,7 +25,7 @@ def pullAuditEntryForNode(nodeid):
     auditEntryforNodeQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/'+nodeid+'/audit-entries'
 
     #print ('query url is: ' + auditentryfornodeQuery + '--->>>>') #debug
-    data=runQuery('get',auditEntryforNodeQuery,'',auth)
+    data=runQuery('get',auditEntryforNodeQuery,'',user,passwd)
     #print (data) #debug
     return data
 
@@ -31,7 +33,7 @@ def pullAuditEntryDetailsForNode(auditentryid):
 
     auditEntryDetailsForNodeQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/audit-applications/alfresco-access/audit-entries/'+str(auditentryid)+'?fields=values'
 
-    data=runQuery('get',auditEntryDetailsForNodeQuery,'',auth)
+    data=runQuery('get',auditEntryDetailsForNodeQuery,'',user,passwd)
 
     #See if the actual action data can be returned
     actionDetailsForNode = data['entry']['values']['/alfresco-access/transaction/action']

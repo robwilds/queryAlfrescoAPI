@@ -2,6 +2,7 @@ import peopleGroups
 import pandas as pd
 import auditApps
 import auditEntryForNode
+import getRekognitionFiles
 
 from flask import Flask,json,Response,request
 from flask_cors import CORS, cross_origin
@@ -18,7 +19,8 @@ def default():
                 <p>peoplegroups</p>
                 <p>auditapps</p>
                 <p>auditentryfornode</p>
-                <p>createFilePlan</p>"""
+                <p>createFilePlan</p>
+                <p>getrekognitionfiles</p>"""
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -37,6 +39,10 @@ def auditentryfornode():
 def createFilePlan():
     print(NotImplementedError)
     return NotImplementedError
+
+@app.route("/getrekognitionfiles")
+def getRekognitionFiles():
+    return getRekognitionFiles()
 
 if __name__ == "__main__":
     # Please do not set debug=True in production
