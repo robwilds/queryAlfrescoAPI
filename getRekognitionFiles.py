@@ -33,15 +33,15 @@ def downloadImages(nodeid,path):
   #put process here to determine extension based on mimetype
   #could use this: https://note.nkmk.me/en/python-mimetypes-usage/
 
-  with open(path+'rekogimages/' + nodeid+".jpg",'wb') as f:
+  with open(path + nodeid+".jpg",'wb') as f:
     f.write(temp4.content)
 
   return nodeid+".jpg"
 
 def cleanFolder(path):
-  for i in os.listdir(path+'rekogimages/'):
+  for i in os.listdir(path):
     print("removing file: "+i)
-    os.remove(path+'rekogimages/'+i)
+    os.remove(path+i)
 
 def pullListofrekogfiles():
   imageQuery = BASE_URL + '/alfresco/api/-default-/public/search/versions/1/search'
@@ -63,19 +63,20 @@ def getrekogfilesinfo(nodeid):
   #print ('data from file info -->' + json.dumps(data)) #debugging
   return data;
 
-def main():
+def main(requestURL):
 
   rekogSrc = [] #clear array now!
   rekogLabels = []
   rekogName = []
+
   #clean the download folder now!
-  #cleanFolder(path)
+  cleanFolder(path)
 
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
   #now loop and get all images to download and populate data frame columns
   for entry in pullListofrekogfiles()['list']['entries']:
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
-    rekogSrc.append(downloadImages(entry['entry']['id'],path))
+    rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
     rekogName.append(entry['entry']['name'])
     rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
 

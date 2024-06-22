@@ -7,28 +7,31 @@ from dotenv import load_dotenv
 # Load environment variables from the .env file
 load_dotenv()
 
+
 BASE_URL= os.getenv("BASE_URL")
 auth = os.getenv("auth")
+user=os.getenv("user")
+passwd=os.getenv("pass")
 
 def pullGroups():
     groupQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/groups'
     name,id = [],[]
 
     #print ('query url is: ' + groupQuery + '--->>>>') #debug
-    data=runQuery('get',groupQuery,'',auth)
+    data=runQuery('get',groupQuery,'',user,passwd)
 
     return data
 
 def pullPeople():
     peopleQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/people?skipCount=0&maxItems=100000'
     #print ("pull people URL is: " + peopleQuery) #debug
-    data = runQuery('get',peopleQuery,'',auth)
+    data = runQuery('get',peopleQuery,'',user,passwd)
     return data
     
 def pullPeopleGroups(personid):
     peopleGroupsQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/people/'+personid+'/groups'
     #print ("pull peopleGroups URL is: " + peopleGroupsQuery) #debug
-    data = runQuery('get',peopleGroupsQuery,'',auth)
+    data = runQuery('get',peopleGroupsQuery,'',user,passwd)
     return data
 
 def main():

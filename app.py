@@ -24,12 +24,12 @@ CORS(app)
 
 @app.route("/")
 def default():
-    return """<h1>Methods available:</h1>
+    return """<h1>{path}</h1><p/><h1>Methods available:</h1>
                 <p>peoplegroups</p>
                 <p>auditapps</p>
                 <p>auditentryfornode</p>
                 <p>createFilePlan</p>
-                <p>getrekognitionfiles</p>"""
+                <p>getrekognitionfiles</p>""".format(path=request.root_url)
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -51,7 +51,7 @@ def createFilePlan():
 
 @app.route("/getrekognitionfiles")
 def getRekognitionFiles():
-    return grf.main()
+    return Response(grf.main(request.root_url).to_json(orient="records"))
 
 if __name__ == "__main__":
     # Please do not set debug=True in production

@@ -10,8 +10,9 @@ def runQuery(type,queryURL,body,user,passwd):
   match type:
     case 'get':
       data = requests.get(queryURL,auth=basic).json()
-      #print(json.dumps(data))
+      #print(json.dumps(data)) #debugging
       return data
     case 'post':
       data=requests.post(queryURL,body,auth=basic).json()
+      #print(json.dumps(data)) #debugging
       return data
