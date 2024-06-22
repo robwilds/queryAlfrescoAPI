@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 load_dotenv()
 
 port=os.getenv("port")
+BASE_URL=os.getenv("BASE_URL")
 
 #add images (static) folder
 # https://stackoverflow.com/questions/72794072/python-flask-how-to-dynamically-handle-image-and-folder-generation
@@ -24,12 +25,12 @@ CORS(app)
 
 @app.route("/")
 def default():
-    return """<h1>{path}</h1><p/><h1>Methods available:</h1>
+    return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
                 <p><a href="{path}/peoplegroups">peoplegroups</a></p>
                 <p><a href="{path}/auditapps">auditapps</a></p>
                 <p><a href="{path}/auditentryfornode">auditentryfornode?nodeid=</a></p>
                 <p><a href="{path}/createfileplan">createFilePlan</a></p>
-                <p><a href="{path}/getrekognitionfiles>getrekognitionfiles</a></p>""".format(path=request.root_url)
+                <p><a href="{path}/getrekognitionfiles>getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
 
 @app.route("/peoplegroups")
 def peoplegroups():
