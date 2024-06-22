@@ -25,11 +25,11 @@ CORS(app)
 @app.route("/")
 def default():
     return """<h1>{path}</h1><p/><h1>Methods available:</h1>
-                <p>peoplegroups</p>
-                <p>auditapps</p>
-                <p>auditentryfornode</p>
-                <p>createFilePlan</p>
-                <p>getrekognitionfiles</p>""".format(path=request.root_url)
+                <p><a href="{path}/peoplegroups">peoplegroups</a></p>
+                <p><a href="{path}/auditapps">auditapps</a></p>
+                <p><a href="{path}/auditentryfornode">auditentryfornode?nodeid=</a></p>
+                <p><a href="{path}/createfileplan">createFilePlan</a></p>
+                <p><a href="{path}/getrekognitionfiles>getrekognitionfiles</a></p>""".format(path=request.root_url)
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -44,7 +44,7 @@ def auditentryfornode():
     nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
 
-@app.route("/createFilePlan")
+@app.route("/createfileplan")
 def createFilePlan():
     print(NotImplementedError)
     return NotImplementedError
