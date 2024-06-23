@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask,json,Response,request
 from flask_cors import CORS, cross_origin
+from flask_swagger_ui import get_swaggerui_blueprint
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -14,13 +15,15 @@ load_dotenv()
 port=os.getenv("port")
 BASE_URL=os.getenv("BASE_URL")
 
-#add images (static) folder
-# https://stackoverflow.com/questions/72794072/python-flask-how-to-dynamically-handle-image-and-folder-generation
-
 app = Flask(__name__)
+
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = 'http://petstore.swagger.io/v2/swagger.json'  # Our API url (can of course be a local resource)
+
 CORS(app)
 
-#add swagger: https://stackoverflow.com/questions/46237255/how-to-embed-swagger-ui-into-a-webpage
+#add swagger: https://pypi.org/project/flask-swagger-ui/
+#swagger tutorial: https://www.youtube.com/watch?v=7MS1Z_1c5CU&list=PLnBvgoOXZNCOiV54qjDOPA9R7DIDazxBA
 
 
 @app.route("/")
@@ -30,7 +33,7 @@ def default():
                 <p><a href="{path}/auditapps">auditapps</a></p>
                 <p><a href="{path}/auditentryfornode">auditentryfornode?nodeid=</a></p>
                 <p><a href="{path}/createfileplan">createFilePlan</a></p>
-                <p><a href="{path}/getrekognitionfiles>getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
+                <p><a href="{path}/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -55,5 +58,17 @@ def getRekognitionFiles():
     return Response(grf.main(request.root_url).to_json(orient="records"))
 
 if __name__ == "__main__":
+
+    # Call factory function to create our blueprint
+    swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Test application"
+    }
+)
+
+    app.register_blueprint(swaggerui_blueprint)
+
     # Please do not set debug=True in production
     app.run(host="0.0.0.0", port=port, debug=True)
