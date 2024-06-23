@@ -3,5 +3,5 @@ docker stop queryAlfAPI
 docker rm queryAlfAPI
 docker rmi wildsdocker/queryalfapi:latestx86 --force
 docker buildx build --platform=linux/amd64 -t wildsdocker/queryalfapi:latestx86 .
-docker run -d -p 9200:9200 --name queryAlfAPI -v $(pwd):/python-docker wildsdocker/queryalfapi:latestx86
+docker run -d -it -p 9200:9200 --name queryAlfAPI --mount type=bind,source=$(pwd),target=/python-docker wildsdocker/queryalfapi:latestx86
 docker push wildsdocker/queryAlfAPI:latestx86
