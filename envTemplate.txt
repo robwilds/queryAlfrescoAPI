@@ -5,5 +5,5 @@ auth=""
 user=""
 pass=""
 devpath = "../src/assets/"
-prodpath = "../assets/"
+prodpath = "./static/"
 port="9200
