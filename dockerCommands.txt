@@ -10,4 +10,4 @@ docker run -d -it -p 9200:9200 \
 --mount type=bind,source=$(pwd),target=/python-docker \
 wildsdocker/queryalfapi:v1
 
-docker push wildsdocker/queryAlfAPI:v1
+docker push wildsdocker/queryalfapi:v1
