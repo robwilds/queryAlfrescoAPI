@@ -6,3 +6,5 @@ pandas==2.2.2
 python-dotenv==1.0.1
 requests==2.31.0
 flask-swagger-ui==4.11.1
+elastic-transport==8.13.1
+elasticsearch==8.14.0

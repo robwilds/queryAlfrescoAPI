@@ -7,3 +7,5 @@ pass=""
 devpath = "../src/assets/"
 prodpath = "./static/"
 port="9200
+elasticid=""
+elasticapikey=""
