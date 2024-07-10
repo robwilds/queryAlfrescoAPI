@@ -2,6 +2,8 @@
 .git
 .gitignore
 .gitattributes
+.env
+.env.swp
 
 
 # CI
