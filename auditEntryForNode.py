@@ -24,9 +24,9 @@ def pullAuditEntryForNode(nodeid):
 
     auditEntryforNodeQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/'+nodeid+'/audit-entries'
 
-    #print ('query url is: ' + auditentryfornodeQuery + '--->>>>') #debug
+    print ('query url is: ' + auditEntryforNodeQuery + ' with userpass: '+ user+passwd) #debug
     data=runQuery('get',auditEntryforNodeQuery,'',user,passwd)
-    #print (data) #debug
+    print ("data returned is: " + str(data)) #debug
     return data
 
 def pullAuditEntryDetailsForNode(auditentryid):
@@ -51,6 +51,8 @@ def main(nodeid):
     appEntryUser = []
     auditentryfornodeDF = pd.DataFrame(None)
 
+    #print("node id is: "+nodeid) #debugging
+
     for entry in pullAuditEntryForNode(nodeid)['list']['entries']:
         #print(nodeid + '-' + str(entry['entry']['id'])) #debug
 
@@ -70,7 +72,7 @@ def main(nodeid):
 
     
     print (auditentryfornodeDF)
-    #auditentryfornodeDF.to_excel('auditentryfornode.xlsx')
+    auditentryfornodeDF.to_excel('auditentryfornode.xlsx')
 
 
     return auditentryfornodeDF
@@ -79,4 +81,4 @@ def main(nodeid):
 if __name__ == "__main__":
 
     #nodeid = '0e0a3eba-3734-460f-a406-eb79eb6d2955' #testing node on rwilds232
-    main('0e0a3eba-3734-460f-a406-eb79eb6d2955') #debug if this file is run directly not from flask app
+    main('bd7b45c0-5e60-4916-b4c1-fa93df39bbb6') #debug if this file is run directly not from flask app

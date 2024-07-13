@@ -1,11 +1,8 @@
-** use the values below in a .env file
-
 BASE_URL="http://clive-aws-booth.sales-demohyland.com"
-auth=""
 user=""
 pass=""
 devpath = "../src/assets/"
 prodpath = "./static/"
-port="9200
+port="9600"
 elasticid=""
 elasticapikey=""

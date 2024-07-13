@@ -21,7 +21,10 @@ path = prodpath # set the working path here once!
 rekogSrc= []
 rekogName= []
 rekogLabels = []
-cols = {0: 'src',1:'name',2:'labels'}
+rekogParent = []
+rekogNodeId = []
+rekogModifiedDate = []
+cols = {0: 'src',1:'name',2:'labels',3:'parentId',4:'nodeId',5:'modifiedDate'}
 
 def downloadImages(nodeid,path):
 
@@ -56,18 +59,22 @@ def pullListofrekogfiles():
   return data
 
 def getrekogfilesinfo(nodeid):
-  nodeInfoQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/' + nodeid +'?fields=properties'
+  nodeInfoQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/' + nodeid # +'?fields=properties' #use fileIds to limit the amount of data returned
 
   data=runQuery('get',nodeInfoQuery,'',user,passwd)
 
-  #print ('data from file info -->' + json.dumps(data)) #debugging
+  print ('\n\ndata from alfresco -->' + json.dumps(data)) #debugging
   return data;
 
-def main(requestURL):
+def main(requestURL="Http://localllll/"):
 
-  rekogSrc = [] #clear array now!
+  #clear arrays now!
+  rekogSrc = []
   rekogLabels = []
   rekogName = []
+  rekogParent = []
+  rekogNodeId = []
+  rekogModifiedDate = []
 
   #clean the download folder now!
   cleanFolder(path)
@@ -79,8 +86,11 @@ def main(requestURL):
     rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
     rekogName.append(entry['entry']['name'])
     rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
+    rekogParent.append(entry['entry']['parentId'])
+    rekogNodeId.append(entry['entry']['id'])
+    rekogModifiedDate.append(entry['entry']['modifiedAt'])
 
-  rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels]).T
+  rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
   rekogDF.rename(columns=cols,inplace=True)
 
   print (rekogDF)

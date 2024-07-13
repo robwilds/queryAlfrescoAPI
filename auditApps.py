@@ -17,7 +17,7 @@ cols = {0: 'appid'}
 def pullAuditApps():
     auditAppQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/audit-applications'
 
-    #print ('query url is: ' + auditAppQuery + '--->>>>') #debug
+    #print ('query url is: ' + auditAppQuery) #debug
     data=runQuery('get',auditAppQuery,'',user,passwd)
     return data
 
