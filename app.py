@@ -3,6 +3,7 @@ import pandas as pd
 import auditApps
 import auditEntryForNode
 import getRekognitionFiles as grf
+import createFilePlan
 import os
 from dotenv import load_dotenv
 from flask import Flask,json,Response,request
@@ -32,7 +33,7 @@ def default():
                 <p><a href="{path}/peoplegroups">peoplegroups</a></p>
                 <p><a href="{path}/auditapps">auditapps</a></p>
                 <p><a href="{path}/auditentryfornode">auditentryfornode?nodeid=</a></p>
-                <p><a href="{path}/createfileplan">createFilePlan</a></p>
+                <p><a href="{path}/createfileplan">createFilePlan</a> this accepts post data</p>
                 <p><a href="{path}/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
 
 @app.route("/peoplegroups")
@@ -48,10 +49,10 @@ def auditentryfornode():
     nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
 
-@app.route("/createfileplan")
+@app.route("/createfileplan",methods = ['POST'])
 def createFilePlan():
-    print(NotImplementedError)
-    return NotImplementedError
+    print (request.values)
+    return Response()
 
 @app.route("/getrekognitionfiles")
 def getRekognitionFiles():

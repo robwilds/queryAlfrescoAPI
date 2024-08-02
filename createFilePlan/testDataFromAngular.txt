@@ -1,0 +1,19 @@
+[
+  {
+    "GRSID": "GRS_1.1.001",
+    "RecordTitle": "Financial management and reporting administrative records",
+    "ClassificationGeneral": "Financial Management",
+    "LegalCitation": "",
+    "Disposition": "Temporary",
+    "RetentionYears": "3",
+    "RetentionType": "Creation_Age",
+    "EventTypeGeneral": "",
+    "LongerRetentionAuthorized": "Yes",
+    "DeviationsAllowed": "Yes",
+    "FullDispositionInstruction": "\"Destroy when 3 years old but longer retention is authorized if needed for business use.\"",
+    "DispositionAuthority": "DAA-GRS-2016-0013-0001",
+    "Supersededby": "",
+    "LastUpdated": "23-Jun",
+    "Comments": "6/2023: Corrected GRS ID."
+  }
+]
