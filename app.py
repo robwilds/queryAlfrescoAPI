@@ -53,7 +53,7 @@ def auditentryfornode():
 def createFilePlan():
     # test curl command: curl -X POST http://localhost:9600/createfileplan --data-binary "@testDataFromAngular.txt"
     print (request.get_json())
-    return Response(request.values)
+    return Response(request.get_json())
 
 @app.route("/getrekognitionfiles")
 def getRekognitionFiles():
