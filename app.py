@@ -30,11 +30,14 @@ CORS(app)
 @app.route("/")
 def default():
     return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
-                <p><a href="{path}/peoplegroups">peoplegroups</a></p>
-                <p><a href="{path}/auditapps">auditapps</a></p>
-                <p><a href="{path}/auditentryfornode">auditentryfornode?nodeid=</a></p>
-                <p><a href="{path}/createfileplan">createFilePlan</a> this accepts post data</p>
-                <p><a href="{path}/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
+                <p><a href="/peoplegroups">peoplegroups</a></p>
+                <p><a href="/auditapps">auditapps</a></p>
+                <p><a href="/auditentryfornode">auditentryfornode?nodeid=</a></p><form method="get" action="/auditentryfornode">
+    <input type="text" name="nodeid" placeholder="nodeID...." />
+    <input type="submit" value="submit" />
+</form>
+                <p><a href="/createfileplan">createFilePlan</a> this accepts post data</p>
+                <p><a href="/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
 
 @app.route("/peoplegroups")
 def peoplegroups():

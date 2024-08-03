@@ -18,7 +18,7 @@ be sure to create a .env file in the root of the project.  There's a envTemplate
 
 ## Process Flow
 
-This project is configure like a micro-service.  Run the app by using the command "flask run" from the command line.  this will fire up the app.py and use the default port of 9600.  you will be able to navigate to an endpoing with http://localhost:5000
+This project is configure like a micro-service.  Run the app by using the command "flask run" from the command line.  this will fire up the app.py and use the default port of 9600.  you will be able to navigate to an endpoint with http://<hostname>:9600
 
 ## Configured EndPoints
 
