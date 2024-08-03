@@ -88,8 +88,9 @@ def createSubCategoryandRetention(recCategorId):
 
 
 
-def main():
-    print("nothing");
+def main(inputJson):
+    print(pd.read_json(inputJson))
+    return(pd.read_json(inputJson))
 
 
 
