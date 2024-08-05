@@ -89,10 +89,10 @@ def createSubCategoryandRetention(recCategorId):
 
 
 def main(inputJson):
-    print(pd.read_json(inputJson))
-    return(pd.read_json(inputJson))
-
-
+    #print(inputJson)
+    df = pd.json_normalize(inputJson)
+    print(df.T)
+    return('')
 
 
 if __name__ == "__main__":
