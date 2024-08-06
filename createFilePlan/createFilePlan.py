@@ -99,7 +99,6 @@ def main(inputJson):
     for key in inputJson:
         print(key['DeviationsAllowed'])
         # now need to run through the processes to create the file plan
-        that's
 
 
     return('Create File Plans')
