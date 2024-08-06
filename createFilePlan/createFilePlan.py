@@ -1,8 +1,10 @@
 # this is for the file plan creation from the angular app
 
 from queryAlf import runQuery
-import pandas as pd, json
+import pandas as pd
+import json
 import os
+import io
 from dotenv import load_dotenv
 
 def createCategory(filePlanId):
@@ -86,13 +88,21 @@ def createSubCategoryandRetention(recCategorId):
 """
     print(NotImplementedError);
 
-
-
 def main(inputJson):
     #print(inputJson)
-    df = pd.json_normalize(inputJson)
-    print(df.T)
-    return('')
+    #df = pd.json_normalize(inputJson)
+    #df = pd.read_json( io.StringIO( json.dumps(inputJson) ),orient="records")
+    #print(df['GRSID'])
+
+    jsonObject = json.loads(json.dumps(inputJson))
+
+    for key in inputJson:
+        print(key['DeviationsAllowed'])
+        # now need to run through the processes to create the file plan
+        that's
+
+
+    return('Create File Plans')
 
 
 if __name__ == "__main__":
