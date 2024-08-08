@@ -52,6 +52,10 @@ def auditentryfornode():
     nodeID = request.args.get('nodeid')
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
 
+@app.route("/getrekognitionfiles")
+def getRekognitionFiles():
+    return Response(grf.main(request.root_url).to_json(orient="records"))
+
 @app.route("/createfileplan",methods = ['POST'])
 def createFilePlan():
     # test curl command: curl -X POST -H 'Content-Type: application/json' http://localhost:9600/createfileplan --data-binary "@testDataFromAngular.txt"
@@ -59,9 +63,7 @@ def createFilePlan():
     #return Response(request.get_json())
     return Response(CFP.main(request.get_json()))
 
-@app.route("/getrekognitionfiles")
-def getRekognitionFiles():
-    return Response(grf.main(request.root_url).to_json(orient="records"))
+
 
 if __name__ == "__main__":
 

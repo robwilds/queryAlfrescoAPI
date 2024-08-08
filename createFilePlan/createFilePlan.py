@@ -101,7 +101,8 @@ def main(inputJson):
         # now need to run through the processes to create the file plan
 
 
-    return('Create File Plans')
+    #return a json list of the nodeids created (for the categories)
+    return('{"response":"Create File Plans success"}')
 
 
 if __name__ == "__main__":
