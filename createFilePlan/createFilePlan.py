@@ -7,21 +7,25 @@ import os
 import io
 from dotenv import load_dotenv
 
-def createCategory(filePlanId):
-    #Post = /file-plans/{filePlanId}/categories  
-    body=""" 
-{
-          “name”: “$C (classification) cell in spreadsheet”,
-         “description”: “This is a automated creation of record category $C cell in spreadsheet + $A cell in spreadsheet (substring where we would leave out the last 3 digits)
-          “ properties” : 
-	 	{
-			"rma:vitalRecordIndicator":"false",
-    			“rma:identifier”: “”$A cell in spreadsheet (substring where we would leave out the last 3 digits)”
-}
- 		}
+baseFilePlanID = "edf97708-412b-461d-9229-fd0b576b73d6"
+baseURL = "http://clive-aws-booth.sales-demohyland.com/alfresco/api/-default-/public/gs/versions/1"
+def createCategory(filePlanId,classificationgeneral,grsid):
+    #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
 
-"""
-    print (NotImplementedError);
+    postURL = baseURL + "/file-plans/"+baseFilePlanID+"/categories"
+    #Post = /file-plans/{filePlanId}/categories  
+    body="""{{
+          "name": "{0}",
+          "properties" :
+          {{
+			"rma:vitalRecordIndicator":"false",
+    		"rma:identifier": "{1}"
+            }}
+ 		}}""".format(classificationgeneral,grsid)
+    
+    print ("***Create Category***->\n"+body);
+
+    print(runQuery('post',postURL,body,'demo','demo'))
 
 def SearchFilePlanId():
     print(NotImplementedError);
@@ -97,8 +101,9 @@ def main(inputJson):
     jsonObject = json.loads(json.dumps(inputJson))
 
     for key in inputJson:
-        print(key['DeviationsAllowed'])
+        #print(key['ClassificationGeneral'],key['GRSID'])
         # now need to run through the processes to create the file plan
+        createCategory(baseFilePlanID,key['ClassificationGeneral'],key['GRSID'])
 
 
     #return a json list of the nodeids created (for the categories)
