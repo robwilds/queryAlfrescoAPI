@@ -7,8 +7,13 @@ import os
 import io
 from dotenv import load_dotenv
 
+####Variables
 baseFilePlanID = "edf97708-412b-461d-9229-fd0b576b73d6"
 baseURL = "http://clive-aws-booth.sales-demohyland.com/alfresco/api/-default-/public/gs/versions/1"
+recordCategoryID = ""
+subRecord
+filePlanID = ""
+
 def createCategory(filePlanId,classificationgeneral,grsid):
     #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
 
@@ -25,7 +30,10 @@ def createCategory(filePlanId,classificationgeneral,grsid):
     
     print ("***Create Category***->\n"+body);
 
-    print(runQuery('post',postURL,body,'demo','demo'))
+    response = runQuery('post',postURL,body,'demo','demo')
+    recordCategoryID = response['entry']['id']
+
+    print(recordCategoryID)
 
 def SearchFilePlanId():
     print(NotImplementedError);
@@ -44,7 +52,7 @@ def createSubCategoryandRetention(recCategorId):
     
 {
   "name":"createDispositionSchedule",
-  "nodeRef":"workspace://SpacesStore/{{recordcategory.id}}" //recordcategory.id is what you saved from the previous call
+  "nodeRef":"workspace://SpacesStore/{{subRecordCategoryID}}" //recordcategory.id is what you saved from the previous call
 }
 """
 

@@ -2,7 +2,7 @@
 import requests,json
 from requests.auth import HTTPBasicAuth
 
-def runQuery(type,queryURL,body,user,passwd):
+def runQuery(type,queryURL,body,user,passwd) -> dict | None:
   basic = HTTPBasicAuth(user, passwd)
   data = ""
 
