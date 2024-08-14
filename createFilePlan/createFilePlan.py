@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 baseFilePlanID = "edf97708-412b-461d-9229-fd0b576b73d6"
 baseURL = "http://clive-aws-booth.sales-demohyland.com/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
-subRecord = ""
+subRecordID = ""
 filePlanID = ""
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
@@ -60,9 +60,10 @@ def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstr
     postURL = baseURL + "/alfresco/s/api/rma/actions/ExecutionQueue"
     body="""{{
   "name":"createDispositionSchedule",
-  "nodeRef":"workspace://SpacesStore/{{0}}"
+  "nodeRef":"workspace://SpacesStore/{0}"
 }}""".format(subCategoryId)
     
+    print("body for disposition creation is->"+body)
     print('disposition response is->'+str(runQuery('post',postURL,body,'demo','demo')))
 
 
@@ -111,7 +112,7 @@ def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstr
 }
 
 """
-    print(NotImplementedError);
+    #print(NotImplementedError);
 
 def main(inputJson):
     #print(inputJson)

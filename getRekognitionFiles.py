@@ -66,7 +66,12 @@ def getrekogfilesinfo(nodeid):
   print ('\n\ndata from alfresco -->' + json.dumps(data)) #debugging
   return data;
 
-def main(requestURL="Http://localllll/"):
+def createPath(path):
+  if not os.path.exists(path):
+    os.makedirs(path)
+    print(path + ' Created')
+
+def main(requestURL="Http://localllll/"): #the hardcode url is in place for running from command line not from flask
 
   #clear arrays now!
   rekogSrc = []
@@ -77,6 +82,7 @@ def main(requestURL="Http://localllll/"):
   rekogModifiedDate = []
 
   #clean the download folder now!
+  createPath(path)
   cleanFolder(path)
 
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
