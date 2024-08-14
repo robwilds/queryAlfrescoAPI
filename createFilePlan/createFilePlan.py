@@ -11,10 +11,10 @@ from dotenv import load_dotenv
 baseFilePlanID = "edf97708-412b-461d-9229-fd0b576b73d6"
 baseURL = "http://clive-aws-booth.sales-demohyland.com/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
-subRecord
+subRecord = ""
 filePlanID = ""
 
-def createCategory(filePlanId,classificationgeneral,grsid):
+def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
     #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
 
     postURL = baseURL + "/file-plans/"+baseFilePlanID+"/categories"
@@ -31,30 +31,43 @@ def createCategory(filePlanId,classificationgeneral,grsid):
     print ("***Create Category***->\n"+body);
 
     response = runQuery('post',postURL,body,'demo','demo')
-    recordCategoryID = response['entry']['id']
+    
 
-    print(recordCategoryID)
+    #print(recordCategoryID)
+    return (response['entry']['id'])
 
 def SearchFilePlanId():
     print(NotImplementedError);
 
 
-def createSubCategoryandRetention(recCategorId):
-    #Post: /record-categories/{recordCategoryId}/children
-    body="""
-{ "name":"$B from spreadsheet", "nodeType":"rma:recordCategory", "hasRetentionSchedule": true
-  
-} 
-"""
+def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstruction,dispositionAuthority,retentionYears):
 
-    #Post: {{hostname}}/alfresco/s/api/rma/actions/ExecutionQueue
-    body="""
-    
-{
+
+    postURL = baseURL+"/record-categories/"+recCategoryId+"/children"
+    body="""{{
+    "name":"{0}",
+    "nodeType":"rma:recordCategory",
+    "hasRetentionSchedule": true}}""".format(recordTitle)
+
+    response = runQuery('post',postURL,body,'demo','demo')
+    subCategoryId = response['entry']['id']
+    print('sub category id->'+ subCategoryId)
+
+
+
+    #Now create the disposition schedule
+
+    postURL = baseURL + "/alfresco/s/api/rma/actions/ExecutionQueue"
+    body="""{{
   "name":"createDispositionSchedule",
-  "nodeRef":"workspace://SpacesStore/{{subRecordCategoryID}}" //recordcategory.id is what you saved from the previous call
-}
-"""
+  "nodeRef":"workspace://SpacesStore/{{0}}"
+}}""".format(subCategoryId)
+    
+    print('disposition response is->'+str(runQuery('post',postURL,body,'demo','demo')))
+
+
+
+
 
     #get dispositionschedule node id
     body = """Get: {{hostname}}/alfresco/api/-default-/public/alfresco/versions/1/nodes/{{recordcategoryid}}/children?where=(nodeType=rma:dispositionSchedule)"""
@@ -84,7 +97,7 @@ def createSubCategoryandRetention(recCategorId):
 
 """
 
-#add disposition action for destory
+#add disposition action for destroy
 #POST /alfresco/s/api/node/{store_type}/{store_id}/{id}/dispositionschedule/dispositionactiondefinitions
 
     body = """
@@ -110,8 +123,14 @@ def main(inputJson):
 
     for key in inputJson:
         #print(key['ClassificationGeneral'],key['GRSID'])
+
         # now need to run through the processes to create the file plan
-        createCategory(baseFilePlanID,key['ClassificationGeneral'],key['GRSID'])
+        recordCategoryID = createCategory(baseFilePlanID,key['ClassificationGeneral'],key['GRSID'])
+        print ('record cat id is->'+recordCategoryID)
+
+        #Process the sub category with the file plan - this is one huge routine which could be broken up
+        createSubCategoryandRetention(recordCategoryID,key['RecordTitle'],key['FullDispositionInstruction'],key['DispositionAuthority'],key['RetentionYears'])
+
 
 
     #return a json list of the nodeids created (for the categories)
