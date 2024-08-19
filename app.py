@@ -18,7 +18,7 @@ BASE_URL=os.getenv("BASE_URL")
 
 app = Flask(__name__)
 
-SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+SWAGGER_URL = '/api-explorer'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = 'http://petstore.swagger.io/v2/swagger.json'  # Our API url (can of course be a local resource)
 
 CORS(app)
