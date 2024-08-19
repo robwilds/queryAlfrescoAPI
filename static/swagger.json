@@ -1,0 +1,170 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+      "version": "1.0.7",
+      "title": "Swagger Petstore",
+      "termsOfService": "http://swagger.io/terms/",
+      "contact": {
+        "email": "apiteam@swagger.io"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "localhost:9600",
+    "basePath": "/",
+    "tags": [
+    ],
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/peoplegroups": {
+        "get": {
+          "summary": "gets users and associated groups",
+          "description": "",
+          "operationId": "",
+          "consumes": [
+            ""
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+                  
+              }
+            }
+          }
+        }
+      },
+      "/auditentryfornode": {
+        "get": {
+          
+          "summary": "Get audit entry for a node",
+          "description": "JSON response provided with audit entries for a given node.  ",
+          "operationId": "nodeid",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "query",
+              "name": "nodeid",
+              "description": "this is a nodeID from alfresco",
+              "required": true
+            }
+          ],
+          "responses": {
+            "405": {
+              "description": "Invalid input"
+            },
+            "200": {
+              "description": "success"
+            },
+            "500": {
+              "description": "Issue with python code"
+            }
+          }
+        }
+      },
+      "/auditapps": {
+        "get": {
+          "summary": "show enabled audi apps",
+          "description": "",
+          "operationId": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "Invalid status value"
+            }
+          }
+        }
+      },
+      "/getrekognitionfiles": {
+        "get": {
+          "summary": "get all AI:Labels files",
+          "description": "get JSON response of all files with aspect AI:Labels and download the jpeg to the static folder on the server",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {}
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "Invalid tag value"
+            }
+          },
+          "security": [
+          ]
+        }
+      },
+      "/createfileplan": {
+        "post": {
+          "tags": [
+          ],
+          "summary": "create file plan based on json input",
+          "description": "JSON provided from csv spreadsheet via angular application to create file plan.  The spreadsheet is based on NARA GRS CSV file",
+          "operationId": "getPetById",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "",
+              "in": "body",
+              "description": "JSON payload",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "Invalid ID supplied"
+            },
+            "404": {
+              "description": "Pet not found"
+            }
+          },
+          "security": [
+            {
+              "api_key": []
+            }
+          ]
+        }
+      }
+    }
+  ,
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+  }

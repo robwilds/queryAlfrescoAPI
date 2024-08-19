@@ -19,7 +19,7 @@ BASE_URL=os.getenv("BASE_URL")
 app = Flask(__name__)
 
 SWAGGER_URL = '/api-explorer'  # URL for exposing Swagger UI (without trailing '/')
-API_URL = 'http://petstore.swagger.io/v2/swagger.json'  # Our API url (can of course be a local resource)
+API_URL = 'http://localhost:9600/static/swagger.json'  # Our API url (can of course be a local resource)
 
 CORS(app)
 
@@ -30,6 +30,7 @@ CORS(app)
 @app.route("/")
 def default():
     return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
+    <p><a href="/api-explorer">API EXPLORER</a></p>
                 <p><a href="/peoplegroups">peoplegroups</a></p>
                 <p><a href="/auditapps">auditapps</a></p>
                 <p><a href="/auditentryfornode">auditentryfornode?nodeid=</a></p><form method="get" action="/auditentryfornode">
@@ -50,6 +51,7 @@ def auditapps():
 @app.route("/auditentryfornode")
 def auditentryfornode():
     nodeID = request.args.get('nodeid')
+    print('node id for audit is->'+nodeID)
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
 
 @app.route("/getrekognitionfiles")

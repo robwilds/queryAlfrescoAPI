@@ -43,8 +43,9 @@ def downloadImages(nodeid,path):
 
 def cleanFolder(path):
   for i in os.listdir(path):
-    print("removing file: "+i)
-    os.remove(path+i)
+    if ".json" not in i:
+      print("removing file: "+i)
+      os.remove(path+i)
 
 def pullListofrekogfiles():
   imageQuery = BASE_URL + '/alfresco/api/-default-/public/search/versions/1/search'
