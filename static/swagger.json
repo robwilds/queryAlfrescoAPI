@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-      "description": "This is swagger for the custom alfresco api microservice",
+      "description": "This is swagger for the custom alfresco api python microservice",
       "version": "1.0.7",
       "title": "QueryAlfAPI",
       "termsOfService": "http://swagger.io/terms/",
@@ -77,7 +77,7 @@
       },
       "/auditapps": {
         "get": {
-          "summary": "show enabled audi apps",
+          "summary": "show enabled audit apps",
           "description": "",
           "operationId": "",
           "produces": [
