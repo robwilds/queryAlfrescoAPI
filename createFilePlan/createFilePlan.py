@@ -12,6 +12,7 @@ baseFilePlanID = "07cbdcf4-e18e-4783-8bdc-f4e18e3783f1"
 baseURL = "http://localhost:8080/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
 subRecordID = ""
+subFolderID = ""
 filePlanID = ""
 retentionScheduleID=""
 user='admin'
@@ -46,9 +47,45 @@ def SearchFilePlanId():
 def createFilePlan(recCategoryId,retentionYears):
     return('nothing')
 
-def createFolder(recCategoryId):
-    return('nothing')
+def createFolder(recSubCategoryId,name):
+    postURL = baseURL+"/record-categories/"+recSubCategoryId+"/children"
+    body="""{{
+    "name":"{0}",
+    "nodeType":"rma:recordFolder"}}""".format(name)
 
+    response = runQuery('post',postURL,body,user,passwd)
+    print('response from folder call is->'+str(response))
+    subFolderID = response['entry']['id']
+    
+    return(subFolderID)
+
+def createSubCategory(recCategoryId,recordTitle):
+    postURL = baseURL+"/record-categories/"+recCategoryId+"/children"
+    body="""{{
+    "name":"{0}",
+    "nodeType":"rma:recordCategory",
+    "hasRetentionSchedule": true}}""".format(recordTitle)
+
+    response = runQuery('post',postURL,body,user,passwd)
+    print('response from sub category call is->'+str(response))
+    subCategoryId = response['entry']['id']
+    #print('sub category id->'+ subCategoryId)
+    return(subCategoryId)
+
+def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositionInstruction,isrecordlevel):
+    postURL = baseURL+"/record-categories/"+subRecCategoryId+"/retention-schedules"
+    body="""{{
+      "authority": "{0}",
+      "instructions": "{1}",
+      "isRecordLevel": {2}
+  }}""".format(dispositionAuthority,fullDispositionInstruction,isrecordlevel)
+    
+    response = runQuery('post',postURL,body,user,passwd)
+    print('response from retention schedule call is->'+str(response))
+    retentionScheduleID = response['entry']['id']
+    #print('sub category id->'+ subCategoryId)
+    return(retentionScheduleID)
+    
 def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstruction,dispositionAuthority,retentionYears):
 
 
@@ -135,12 +172,26 @@ def main(inputJson):
         #print(key['ClassificationGeneral'],key['GRSID'])
 
         # now need to run through the processes to create the file plan
-        recordCategoryID = createCategory(baseFilePlanID,key['ClassificationGeneral'],key['GRSID'])
+        recordCategoryID = createCategory(baseFilePlanID,key['RecordTitle'],key['GRSID'])
         print ('record cat id is->'+recordCategoryID)
 
         # now create the subcategory using the same createCategory function
-        subRecordID = createCategory(recordCategoryID,'','')
+        subRecordID = createSubCategory(recordCategoryID,key['ClassificationGeneral'])
         print ('sub rec category id is->' + subRecordID)
+
+        # now put the folder on the subcategory..call it "all records" for now
+        subFolderID = createFolder(subRecordID,'My Folder')
+        print ('sub folder id is->'+subFolderID)
+
+        # now go back and add the retention schedule
+        retentionScheduleID = createRetentionSchedule(subRecordID,key['DispositionAuthority'],key['FullDispositionInstruction'],True)
+        print('retention schedule id is->'+retentionScheduleID)
+        
+        # now add the retention steps
+
+
+
+
 
         #Process the sub category with the file plan - this is one huge routine which could be broken up
         #createSubCategoryandRetention(recordCategoryID,key['RecordTitle'],key['FullDispositionInstruction'],key['DispositionAuthority'],key['RetentionYears'])
