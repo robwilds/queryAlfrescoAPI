@@ -8,16 +8,20 @@ import io
 from dotenv import load_dotenv
 
 ####Variables
-baseFilePlanID = "edf97708-412b-461d-9229-fd0b576b73d6"
-baseURL = "http://clive-aws-booth.sales-demohyland.com/alfresco/api/-default-/public/gs/versions/1"
+baseFilePlanID = "07cbdcf4-e18e-4783-8bdc-f4e18e3783f1"
+baseURL = "http://localhost:8080/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
 subRecordID = ""
 filePlanID = ""
+retentionScheduleID=""
+user='admin'
+passwd ='admin'
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
     #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
+    #for local in docker on small macbook pro is workspace://SpacesStore/07cbdcf4-e18e-4783-8bdc-f4e18e3783f1
 
-    postURL = baseURL + "/file-plans/"+baseFilePlanID+"/categories"
+    postURL = baseURL + "/file-plans/"+baseFilePlanID+"/categories?autoRename=true"
     #Post = /file-plans/{filePlanId}/categories  
     body="""{{
           "name": "{0}",
@@ -28,10 +32,10 @@ def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
             }}
  		}}""".format(classificationgeneral,grsid)
     
-    print ("***Create Category***->\n"+body);
+    print ("postURL for create category->"+postURL +"   body->\n"+body);
 
-    response = runQuery('post',postURL,body,'demo','demo')
-    
+    response = runQuery('post',postURL,body,user,passwd)
+    print('response is->'+str(response))
 
     #print(recordCategoryID)
     return (response['entry']['id'])
@@ -39,6 +43,11 @@ def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
 def SearchFilePlanId():
     print(NotImplementedError);
 
+def createFilePlan(recCategoryId,retentionYears):
+    return('nothing')
+
+def createFolder(recCategoryId):
+    return('nothing')
 
 def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstruction,dispositionAuthority,retentionYears):
 
@@ -129,8 +138,12 @@ def main(inputJson):
         recordCategoryID = createCategory(baseFilePlanID,key['ClassificationGeneral'],key['GRSID'])
         print ('record cat id is->'+recordCategoryID)
 
+        # now create the subcategory using the same createCategory function
+        subRecordID = createCategory(recordCategoryID,'','')
+        print ('sub rec category id is->' + subRecordID)
+
         #Process the sub category with the file plan - this is one huge routine which could be broken up
-        createSubCategoryandRetention(recordCategoryID,key['RecordTitle'],key['FullDispositionInstruction'],key['DispositionAuthority'],key['RetentionYears'])
+        #createSubCategoryandRetention(recordCategoryID,key['RecordTitle'],key['FullDispositionInstruction'],key['DispositionAuthority'],key['RetentionYears'])
 
 
 
