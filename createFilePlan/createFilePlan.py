@@ -93,79 +93,25 @@ def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositio
     #print('sub category id->'+ subCategoryId)
     return(retentionScheduleID)
     
-def createSubCategoryandRetention(recCategoryId,recordTitle,fullDispositionInstruction,dispositionAuthority,retentionYears):
+def createRetentionStep(retentionScheduleID,retentionType,retentionTime,retentionPeriod,description):
+    postURL = baseURL+"/retention-schedules/"+retentionScheduleID+"/retention-steps"
 
-
-    postURL = baseURL+"/record-categories/"+recCategoryId+"/children"
     body="""{{
-    "name":"{0}",
-    "nodeType":"rma:recordCategory",
-    "hasRetentionSchedule": true}}""".format(recordTitle)
-
-    response = runQuery('post',postURL,body,'demo','demo')
-    subCategoryId = response['entry']['id']
-    print('sub category id->'+ subCategoryId)
-
-
-
-    #Now create the disposition schedule
-
-    postURL = baseURL + "/alfresco/s/api/rma/actions/ExecutionQueue"
-    body="""{{
-  "name":"createDispositionSchedule",
-  "nodeRef":"workspace://SpacesStore/{0}"
-}}""".format(subCategoryId)
+      "name":"{retentionType}",
+      "description":"{description}",
+      "periodAmount": {retentionTime},
+      "period":"{retentionPeriod}",
+      "periodProperty":"cm:created",
+      "combineRetentionStepConditions": false,
+      "events":[],
+      "eligibleOnFirstCompleteEvent": true    
+  }}""".format(retentionType=retentionType,retentionTime=retentionTime,description=description,retentionPeriod=retentionPeriod)
     
-    print("body for disposition creation is->"+body)
-    print('disposition response is->'+str(runQuery('post',postURL,body,'demo','demo')))
-
-
-
-
-
-    #get dispositionschedule node id
-    body = """Get: {{hostname}}/alfresco/api/-default-/public/alfresco/versions/1/nodes/{{recordcategoryid}}/children?where=(nodeType=rma:dispositionSchedule)"""
-
-    #add retention authority
-    #Post: {{hostname}}/alfresco/s/api/node/workspace/SpacesStore/dispositionScheduleNodeId/formprocessor
-    body = """
-{
-  "prop_rma_dispositionAuthority”:"$L"",
-  "prop_rma_dispositionInstructions":"$K",
-  "prop_rma_recordDisposition":"true"
-}
-
-"""
-
-    #add disposition action for cutoff
-    #POST /alfresco/s/api/node/{store_type}/{store_id}/{recordcategoryid}/dispositionschedule/dispositionactiondefinitions
-    body = """
-{
-   "name" : “Cutoff”,
-   "description" : “$K”,
-   "period" : “”
-   "periodProperty" : “Immediately”,
-   "eligibleOnFirstCompleteEvent" : (Logic in RPA – if $G cell is Event then “and”, “or” otherwise)
-   "events" : [List of event names]
-}
-
-"""
-
-#add disposition action for destroy
-#POST /alfresco/s/api/node/{store_type}/{store_id}/{id}/dispositionschedule/dispositionactiondefinitions
-
-    body = """
-{
-   "name" : “Destroy”,
-   "description" : “$K”,
-   "period" : “$F from sheet”
-   "periodProperty" : “{http://www.alfresco.org/model/recordsmanagement/1.0}cutOffDate”:,
-   "eligibleOnFirstCompleteEvent" : (Logic in RPA – if $G cell is Event then “and”, “or” otherwise)
-   "events" : “$H from sheet”
-}
-
-"""
-    #print(NotImplementedError);
+    response = runQuery('post',postURL,body,user,passwd)
+    print('response from retention retention step call is->'+str(response)+'\n'+'with body->'+body+'\n')
+    retentionStepID = response['entry']['id']
+    #print('sub category id->'+ subCategoryId)
+    return(retentionStepID)
 
 def main(inputJson):
     #print(inputJson)
@@ -190,16 +136,17 @@ def main(inputJson):
         retentionScheduleID = createRetentionSchedule(subRecordID,key['DispositionAuthority'],key['FullDispositionInstruction'],True)
         print('retention schedule id is->'+retentionScheduleID)
         
-        # now add the retention steps
+        # now add the CUTOFF step
+        retentionStepsID = createRetentionStep(retentionScheduleID,"cutoff",0,'immediately','cutoff immediately')
+        print('retention step id for cutoff is->'+retentionStepsID)
+
+        # now add the Destroy step
+        retentionStepsID = createRetentionStep(retentionScheduleID,"transfer",key['RetentionYears'],"year",'transfer in 3 years or whatever')
+        print('retention step id for destroy is->'+retentionStepsID)
 
         # now put the folder on the subcategory..call it "all records" for now
         subFolderID = createFolder(subRecordID,'My Folder')
         print ('sub folder id is->'+subFolderID)
-
-
-        #Process the sub category with the file plan - this is one huge routine which could be broken up
-        #createSubCategoryandRetention(recordCategoryID,key['RecordTitle'],key['FullDispositionInstruction'],key['DispositionAuthority'],key['RetentionYears'])
-
 
 
     #return a json list of the nodeids created (for the categories)
