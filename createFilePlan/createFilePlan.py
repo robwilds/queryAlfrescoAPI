@@ -36,7 +36,7 @@ def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
     print ("postURL for create category->"+postURL +"   body->\n"+body);
 
     response = runQuery('post',postURL,body,user,passwd)
-    print('response is->'+str(response))
+    print('response is->'+str(response)+'\n')
 
     #print(recordCategoryID)
     return (response['entry']['id'])
@@ -54,7 +54,7 @@ def createFolder(recSubCategoryId,name):
     "nodeType":"rma:recordFolder"}}""".format(name)
 
     response = runQuery('post',postURL,body,user,passwd)
-    print('response from folder call is->'+str(response))
+    print('response from folder call is->'+str(response)+'\n')
     subFolderID = response['entry']['id']
     
     return(subFolderID)
@@ -67,13 +67,20 @@ def createSubCategory(recCategoryId,recordTitle):
     "hasRetentionSchedule": true}}""".format(recordTitle)
 
     response = runQuery('post',postURL,body,user,passwd)
-    print('response from sub category call is->'+str(response))
+    print('response from sub category call is->'+str(response)+'\n')
     subCategoryId = response['entry']['id']
     #print('sub category id->'+ subCategoryId)
     return(subCategoryId)
 
 def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositionInstruction,isrecordlevel):
     postURL = baseURL+"/record-categories/"+subRecCategoryId+"/retention-schedules"
+    #cleans the retention instructions now
+    fullDispositionInstruction = fullDispositionInstruction.replace('"','')
+    if (isrecordlevel):
+        isrecordlevel = "true"
+    else:
+        isrecordlevel = "false"
+
     body="""{{
       "authority": "{0}",
       "instructions": "{1}",
@@ -81,7 +88,7 @@ def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositio
   }}""".format(dispositionAuthority,fullDispositionInstruction,isrecordlevel)
     
     response = runQuery('post',postURL,body,user,passwd)
-    print('response from retention schedule call is->'+str(response))
+    print('response from retention schedule call is->'+str(response)+'\n'+'with body->'+body+'\n')
     retentionScheduleID = response['entry']['id']
     #print('sub category id->'+ subCategoryId)
     return(retentionScheduleID)
@@ -179,18 +186,15 @@ def main(inputJson):
         subRecordID = createSubCategory(recordCategoryID,key['ClassificationGeneral'])
         print ('sub rec category id is->' + subRecordID)
 
-        # now put the folder on the subcategory..call it "all records" for now
-        subFolderID = createFolder(subRecordID,'My Folder')
-        print ('sub folder id is->'+subFolderID)
-
-        # now go back and add the retention schedule
+        # now add the retention schedule
         retentionScheduleID = createRetentionSchedule(subRecordID,key['DispositionAuthority'],key['FullDispositionInstruction'],True)
         print('retention schedule id is->'+retentionScheduleID)
         
         # now add the retention steps
 
-
-
+        # now put the folder on the subcategory..call it "all records" for now
+        subFolderID = createFolder(subRecordID,'My Folder')
+        print ('sub folder id is->'+subFolderID)
 
 
         #Process the sub category with the file plan - this is one huge routine which could be broken up
