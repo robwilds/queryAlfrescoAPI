@@ -121,6 +121,8 @@ def main(inputJson):
 
     jsonObject = json.loads(json.dumps(inputJson))
 
+    print('captured json is->'+str(jsonObject)+'\n')
+
     for key in inputJson:
         #print(key['ClassificationGeneral'],key['GRSID'])
 
@@ -145,7 +147,7 @@ def main(inputJson):
         print('retention step id for destroy is->'+retentionStepsID)
 
         # now put the folder on the subcategory..call it "all records" for now
-        subFolderID = createFolder(subRecordID,'My Folder')
+        subFolderID = createFolder(subRecordID,'AllRecords')
         print ('sub folder id is->'+subFolderID)
 
 

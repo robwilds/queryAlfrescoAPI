@@ -128,8 +128,8 @@
           "tags": [
           ],
           "summary": "create file plan based on json input",
-          "description": "JSON provided from csv spreadsheet via angular application to create file plan.  The spreadsheet is based on NARA GRS CSV file",
-          "operationId": "getPetById",
+          "description": "JSON provided from csv spreadsheet via angular application to create file plan.  \n The spreadsheet is based on NARA GRS CSV file",
+         
           "produces": [
             "application/json"
           ],
@@ -148,10 +148,10 @@
               }
             },
             "400": {
-              "description": "Invalid ID supplied"
+              "description": "payload not correct"
             },
             "404": {
-              "description": "Pet not found"
+              "description": "some other issue"
             }
           },
           "security": [
