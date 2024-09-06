@@ -8,7 +8,7 @@ import io
 from dotenv import load_dotenv
 
 ####Variables
-baseFilePlanID = "07cbdcf4-e18e-4783-8bdc-f4e18e3783f1"
+baseFilePlanID = "29493f15-1c38-4f9c-893f-151c388f9cb4"
 baseURL = "http://localhost:8080/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
 subRecordID = ""

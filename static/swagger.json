@@ -128,14 +128,16 @@
           "tags": [
           ],
           "summary": "create file plan based on json input",
+          
           "description": "JSON provided from csv spreadsheet via angular application to create file plan.  \n The spreadsheet is based on NARA GRS CSV file\nHere's the json payload that must be fed to this end point:\n [{\n\"GRSID\": \"GRS_1.1.001\",\n \"RecordTitle\": \"Financial management and reporting administrative records\"\n\"ClassificationGeneral\": \"Financial Management\",\n\"LegalCitation\": \"\",\n\"Disposition\": \"Temporary\",\n\"RetentionYears\": \"3\",\n\"RetentionType\": \"Creation_Age\",\n\"EventTypeGeneral\": \"\",\n\"LongerRetentionAuthorized\": \"Yes\",\n\"DeviationsAllowed\": \"Yes\",\n\"FullDispositionInstruction\": \"Destroy when 3 years old but longer retention is authorized if needed for business use.\",\n\"DispositionAuthority\": \"DAA-GRS-2016-0013-0001\",\n\"Supersededby\": \"\",\n\"LastUpdated\": \"23-Jun\",\n\"Comments\": \"6/2023: Corrected GRS ID.\"}]",
          
           "produces": [
             "application/json"
           ],
+          
           "parameters": [
             {
-              "name": "",
+              "name": "formData",
               "in": "body",
               "description": "JSON payload",
               "required": true

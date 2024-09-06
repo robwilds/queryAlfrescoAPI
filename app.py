@@ -6,7 +6,7 @@ import getRekognitionFiles as grf
 import createFilePlan.createFilePlan as CFP
 import os
 from dotenv import load_dotenv
-from flask import Flask,json,Response,request
+from flask import Flask,json,Response,request,redirect
 from flask_cors import CORS, cross_origin
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -29,16 +29,17 @@ CORS(app)
 
 @app.route("/")
 def default():
-    return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
-    <p><a href="/api-explorer">API EXPLORER</a></p>
-                <p><a href="/peoplegroups">peoplegroups</a></p>
-                <p><a href="/auditapps">auditapps</a></p>
-                <p><a href="/auditentryfornode">auditentryfornode?nodeid=</a></p><form method="get" action="/auditentryfornode">
-    <input type="text" name="nodeid" placeholder="nodeID...." />
-    <input type="submit" value="submit" />
-</form>
-                <p><a href="/createfileplan">createFilePlan</a> this accepts post data</p>
-                <p><a href="/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
+    return redirect("/api-explorer")
+#     return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
+#     <p><a href="/api-explorer">API EXPLORER</a></p>
+#                 <p><a href="/peoplegroups">peoplegroups</a></p>
+#                 <p><a href="/auditapps">auditapps</a></p>
+#                 <p><a href="/auditentryfornode">auditentryfornode?nodeid=</a></p><form method="get" action="/auditentryfornode">
+#     <input type="text" name="nodeid" placeholder="nodeID...." />
+#     <input type="submit" value="submit" />
+# </form>
+#                 <p><a href="/createfileplan">createFilePlan</a> this accepts post data</p>
+#                 <p><a href="/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
 
 @app.route("/peoplegroups")
 def peoplegroups():
