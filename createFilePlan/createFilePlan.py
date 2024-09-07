@@ -7,22 +7,28 @@ import os
 import io
 from dotenv import load_dotenv
 
+
+# Load environment variables from the .env file
+load_dotenv()
+
+BASE_URL= os.getenv("BASE_URL")
+user=os.getenv("user")
+passwd=os.getenv("pass")
+
 ####Variables
-baseFilePlanID = "29493f15-1c38-4f9c-893f-151c388f9cb4"
-baseURL = "http://localhost:8080/alfresco/api/-default-/public/gs/versions/1"
+baseFilePlanID = os.getenv("baseFilePlanID")
+#BASE_URL = "http://localhost:8080/alfresco/api/-default-/public/gs/versions/1"
 recordCategoryID = ""
 subRecordID = ""
 subFolderID = ""
 filePlanID = ""
 retentionScheduleID=""
-user='admin'
-passwd ='admin'
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
     #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
     #for local in docker on small macbook pro is workspace://SpacesStore/07cbdcf4-e18e-4783-8bdc-f4e18e3783f1
 
-    postURL = baseURL + "/file-plans/"+baseFilePlanID+"/categories?autoRename=true"
+    postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+baseFilePlanID+"/categories?autoRename=true"
     #Post = /file-plans/{filePlanId}/categories  
     body="""{{
           "name": "{0}",
@@ -48,7 +54,7 @@ def createFilePlan(recCategoryId,retentionYears):
     return('nothing')
 
 def createFolder(recSubCategoryId,name):
-    postURL = baseURL+"/record-categories/"+recSubCategoryId+"/children"
+    postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+recSubCategoryId+"/children"
     body="""{{
     "name":"{0}",
     "nodeType":"rma:recordFolder"}}""".format(name)
@@ -60,7 +66,7 @@ def createFolder(recSubCategoryId,name):
     return(subFolderID)
 
 def createSubCategory(recCategoryId,recordTitle):
-    postURL = baseURL+"/record-categories/"+recCategoryId+"/children"
+    postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+recCategoryId+"/children"
     body="""{{
     "name":"{0}",
     "nodeType":"rma:recordCategory",
@@ -73,7 +79,7 @@ def createSubCategory(recCategoryId,recordTitle):
     return(subCategoryId)
 
 def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositionInstruction,isrecordlevel):
-    postURL = baseURL+"/record-categories/"+subRecCategoryId+"/retention-schedules"
+    postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+subRecCategoryId+"/retention-schedules"
     #cleans the retention instructions now
     fullDispositionInstruction = fullDispositionInstruction.replace('"','')
     if (isrecordlevel):
@@ -94,7 +100,7 @@ def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositio
     return(retentionScheduleID)
     
 def createRetentionStep(retentionScheduleID,retentionType,retentionTime,retentionPeriod,description):
-    postURL = baseURL+"/retention-schedules/"+retentionScheduleID+"/retention-steps"
+    postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/retention-schedules/"+retentionScheduleID+"/retention-steps"
 
     body="""{{
       "name":"{retentionType}",
