@@ -16,16 +16,21 @@ load_dotenv()
 port=os.getenv("port")
 BASE_URL=os.getenv("BASE_URL")
 
-app = Flask(__name__)
-
 SWAGGER_URL = '/api-explorer'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = 'http://localhost:9600/static/swagger.json'  # Our API url (can of course be a local resource)
 
-CORS(app)
+app = Flask(__name__)
+
+#CORS(app)
+CORS(app, resource={
+    r"/*":{
+        "origins":"*"
+    }
+})
+#app.config['CORS_HEADERS'] = 'Content-Type'
 
 #add swagger: https://pypi.org/project/flask-swagger-ui/
 #swagger tutorial: https://www.youtube.com/watch?v=7MS1Z_1c5CU&list=PLnBvgoOXZNCOiV54qjDOPA9R7DIDazxBA
-
 
 @app.route("/")
 def default():
@@ -40,6 +45,7 @@ def default():
 # </form>
 #                 <p><a href="/createfileplan">createFilePlan</a> this accepts post data</p>
 #                 <p><a href="/getrekognitionfiles">getrekognitionfiles</a></p>""".format(path=request.root_url,BASE_URL=BASE_URL)
+
 
 @app.route("/peoplegroups")
 def peoplegroups():
@@ -59,14 +65,14 @@ def auditentryfornode():
 def getRekognitionFiles():
     return Response(grf.main(request.root_url).to_json(orient="records"))
 
-@app.route("/createfileplan",methods = ['POST'])
+@app.route("/createfileplan",methods = ['POST','OPTIONS'])
+@cross_origin('*')
 def createFilePlan():
     # test curl command: curl -X POST -H 'Content-Type: application/json' http://localhost:9600/createfileplan --data-binary "@testDataFromAngular.txt"
     #print (request.get_json())
     #return Response(request.get_json())
+    
     return Response(CFP.main(request.get_json()))
-
-
 
 if __name__ == "__main__":
 
@@ -78,7 +84,6 @@ if __name__ == "__main__":
         'app_name': "Test application"
     }
 )
-
     app.register_blueprint(swaggerui_blueprint)
 
     # Please do not set debug=True in production
