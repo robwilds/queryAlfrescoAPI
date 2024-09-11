@@ -33,6 +33,7 @@ CORS(app, resource={
 #swagger tutorial: https://www.youtube.com/watch?v=7MS1Z_1c5CU&list=PLnBvgoOXZNCOiV54qjDOPA9R7DIDazxBA
 
 @app.route("/")
+@cross_origin('*')
 def default():
     return redirect("/api-explorer")
 #     return """<h1>{BASE_URL}</h1><p/><h1>Methods available:</h1>
