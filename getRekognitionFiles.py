@@ -36,10 +36,18 @@ def downloadImages(nodeid,path):
   #put process here to determine extension based on mimetype
   #could use this: https://note.nkmk.me/en/python-mimetypes-usage/
 
-  with open(path + nodeid+".jpg",'wb') as f:
-    f.write(temp4.content)
+  #check if file is already there, otherwise skip it
+  #this could be bad if an existing node gets a new file
+  filePath = path + nodeid+".jpg"
+  fileName = nodeid+".jpg"
+  if os.path.exists(filePath):
+    print('file already exists-> '+filePath+'\n')
+  else:
+    print('file doesn''t exist-> '+filePath+'\n')
+    with open(filePath,'wb') as f:
+      f.write(temp4.content)
 
-  return nodeid+".jpg"
+  return fileName
 
 def cleanFolder(path):
   for i in os.listdir(path):
@@ -82,9 +90,13 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
   rekogNodeId = []
   rekogModifiedDate = []
 
-  #clean the download folder now!
+  runOnce = False
+
+  #create the storage path for the downloaded files
   createPath(path)
-  cleanFolder(path)
+  
+  #clean the download folder now!
+  #cleanFolder(path)
 
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
   #now loop and get all images to download and populate data frame columns

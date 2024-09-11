@@ -4,9 +4,10 @@ docker rmi wildsdocker/queryalfapi:v1 --force
 
 docker buildx build --load --platform=linux/amd64 -t wildsdocker/queryalfapi:v1 .
 
+docker push wildsdocker/queryalfapi:v1
+
 docker run -d -it -p 9600:9600 \
 --name queryAlfAPI \
 --mount type=bind,source=$(pwd),target=/python-docker \
 wildsdocker/queryalfapi:v1
 
-docker push wildsdocker/queryalfapi:v1

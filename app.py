@@ -48,20 +48,24 @@ def default():
 
 
 @app.route("/peoplegroups")
+@cross_origin('*')
 def peoplegroups():
     return Response(peopleGroups.main().to_json(orient = 'records'),mimetype='text/json')
 
 @app.route("/auditapps")
+@cross_origin('*')
 def auditapps():
     return Response(auditApps.main().to_json(orient = 'records'),mimetype='text/json')
 
 @app.route("/auditentryfornode")
+@cross_origin('*')
 def auditentryfornode():
     nodeID = request.args.get('nodeid')
     print('node id for audit is->'+nodeID)
     return Response(auditEntryForNode.main(nodeID).to_json(orient = 'records'),mimetype='text/json')
 
 @app.route("/getrekognitionfiles")
+@cross_origin('*')
 def getRekognitionFiles():
     return Response(grf.main(request.root_url).to_json(orient="records"))
 
