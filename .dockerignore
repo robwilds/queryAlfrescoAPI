@@ -2,10 +2,10 @@
 .git
 .gitignore
 .gitattributes
-.env
+#.env
 .env.swp
-**/*.env
-**/*.env.*
+#**/*.env
+#**/*.env.*
 
 # CI
 .codeclimate.yml
