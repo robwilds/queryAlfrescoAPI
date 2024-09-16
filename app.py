@@ -17,7 +17,7 @@ port=os.getenv("port")
 BASE_URL=os.getenv("BASE_URL")
 
 SWAGGER_URL = '/api-explorer'  # URL for exposing Swagger UI (without trailing '/')
-API_URL = 'http://localhost:9600/static/swagger.json'  # Our API url (can of course be a local resource)
+API_URL = os.getenv("API_URL")  # Our API url (can of course be a local resource)
 
 app = Flask(__name__)
 
@@ -28,9 +28,6 @@ CORS(app, resource={
     }
 })
 #app.config['CORS_HEADERS'] = 'Content-Type'
-
-#add swagger: https://pypi.org/project/flask-swagger-ui/
-#swagger tutorial: https://www.youtube.com/watch?v=7MS1Z_1c5CU&list=PLnBvgoOXZNCOiV54qjDOPA9R7DIDazxBA
 
 @app.route("/")
 @cross_origin('*')

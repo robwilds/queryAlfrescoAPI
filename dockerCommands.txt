@@ -2,7 +2,7 @@ docker stop queryAlfAPI
 docker rm queryAlfAPI
 docker rmi wildsdocker/queryalfapi:v1 --force
 
-docker buildx build --load --platform=linux/amd64 -t wildsdocker/queryalfapi:v1 .
+docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/queryalfapi:v1 .
 
 docker push wildsdocker/queryalfapi:v1
 
