@@ -3,7 +3,7 @@
 .gitignore
 .gitattributes
 #.env
-.env.swp
+#.env.swp
 #**/*.env
 #**/*.env.*
 
