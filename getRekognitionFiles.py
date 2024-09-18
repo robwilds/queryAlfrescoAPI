@@ -68,7 +68,7 @@ def pullListofrekogfiles():
   return data
 
 def getrekogfilesinfo(nodeid):
-  nodeInfoQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/' + nodeid # +'?fields=properties' #use fileIds to limit the amount of data returned
+  nodeInfoQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/nodes/' + nodeid +'?fields=properties,name,id,modifiedAt' #use fileIds to limit the amount of data returned
 
   data=runQuery('get',nodeInfoQuery,'',user,passwd)
 
@@ -79,6 +79,20 @@ def createPath(path):
   if not os.path.exists(path):
     os.makedirs(path)
     print(path + ' Created')
+
+def getTagValue(tagidArray):
+
+  #loop through each entry to get the name and add to array then return array
+  tagvalArray = []
+
+  for entry in tagidArray:
+    tagvaluequery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/tags/'+entry
+    data = runQuery('get',tagvaluequery,'',user,passwd)
+    tagvalArray.append(data['entry']['tag'])
+  
+  print ('\n data from Tag routine -> '+str(tagvalArray))
+  return tagvalArray
+
 
 def main(requestURL="Http://localllll/"): #the hardcode url is in place for running from command line not from flask
 
@@ -104,7 +118,16 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
     rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
     rekogName.append(entry['entry']['name'])
-    rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
+
+    
+    #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
+    
+    rekogLabels.append(getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+    
+    #print('Tag value from caller -> ' + getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+    #added to identify hyland employees
+    #print ('\\n\\n debug for schema:textLines -> '+ str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+    #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:textLines'])
     rekogParent.append(entry['entry']['parentId'])
     rekogNodeId.append(entry['entry']['id'])
     rekogModifiedDate.append(entry['entry']['modifiedAt'])
