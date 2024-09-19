@@ -1,5 +1,5 @@
-BASE_URL="http://alfresco:8080"
-API_URL = 'http://localhost:9600/static/swagger.json'
+BASE_URL="http://content:8080"
+API_URL = '/static/swagger.json'
 user="admin"
 pass="admin"
 devpath = "../src/assets/"
