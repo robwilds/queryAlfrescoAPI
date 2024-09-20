@@ -74,9 +74,9 @@ docs/_build/
 target/
 
 # Virtual environment
-.env
-.venv/
-venv/
+#.env
+#.venv/
+#venv/
 
 # PyCharm
 .idea
