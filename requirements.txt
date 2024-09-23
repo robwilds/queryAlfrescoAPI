@@ -8,3 +8,4 @@ requests==2.31.0
 flask-swagger-ui==4.11.1
 elastic-transport==8.13.1
 elasticsearch==8.14.0
+elasticsearch-async==6.2.0
