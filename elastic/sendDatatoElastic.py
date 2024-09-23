@@ -1,6 +1,6 @@
 # Import necessary libraries
 import pandas as pd  # For data manipulation with DataFrames
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, helpers
 import configparser
 
 config = configparser.ConfigParser()
@@ -14,14 +14,49 @@ def main(elasticData = None,index=None,document=None):
     cloud_id=config['ELASTIC']['cloud_id'],
     http_auth=(config['ELASTIC']['user'], config['ELASTIC']['password']))
 
-    print ("es info -> " + str(es.info()))
+    #print ("es info -> " + str(es.info()))
 
     #clear the index(ces)
-    indices = ['lord-of-the-rings']
+    indices = ['lord-of-the-rings','samplerekog']
     es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
 
-    #now index some data
+    #test data with array in document
     es.index(refresh='true',
+ index='samplerekog',
+ document={
+  'name': 'Rob',
+  'tags': 'man'
+ })
+    
+    es.index(refresh='true',
+ index='samplerekog',
+ document={
+  'name': 'Rob',
+  'tags': 'happy'
+ })
+    
+    es.index(refresh='true',
+ index='samplerekog',
+ document={
+  'name': 'Rob',
+  'tags': 'weapon'
+ })
+
+    es.index(refresh='true',
+ index='samplerekog',
+ document={
+  'name': 'Jim',
+  'tags': 'man'
+ })
+    es.index(refresh='true',
+ index='samplerekog',
+ document={
+  'name': 'Jim',
+  'tags': 'meeting'
+ })
+    
+    #now index some more data
+"""     es.index(refresh='true',
  index='lord-of-the-rings',
  document={
   'character': 'Aragon',
@@ -40,7 +75,7 @@ def main(elasticData = None,index=None,document=None):
  document={
   'character': 'Frodo Baggins',
   'quote': 'You are late'
- })
+ }) """
 
 if __name__ == "__main__":
     main()
