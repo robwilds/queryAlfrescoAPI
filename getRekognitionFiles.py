@@ -119,7 +119,7 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
   #now loop and get all images to download and populate data frame columns
   counter = 1
   #clear indexes in elastic now
-  send2Elastic.clearIndexes()
+  #send2Elastic.clearIndexes()
 
   for entry in pullListofrekogfiles()['list']['entries']:
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
