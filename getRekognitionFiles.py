@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import requests,json
 from requests.auth import HTTPBasicAuth
+import elastic.sendDatatoElastic as send2Elastic
 
 #test nodeid in rwilds232: 19264eec-0d3e-4afe-80df-acc72c4e950b
 
@@ -90,7 +91,7 @@ def getTagValue(tagidArray):
     data = runQuery('get',tagvaluequery,'',user,passwd)
     tagvalArray.append(data['entry']['tag'])
   
-  print ('\n data from Tag routine -> '+str(tagvalArray))
+  #print ('\n data from Tag routine -> '+str(tagvalArray))
   return tagvalArray
 
 
@@ -106,6 +107,8 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
   runOnce = False
 
+  docPayload = ""
+
   #create the storage path for the downloaded files
   createPath(path)
   
@@ -114,6 +117,7 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
   #now loop and get all images to download and populate data frame columns
+  counter = 1
   for entry in pullListofrekogfiles()['list']['entries']:
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
     rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
@@ -132,10 +136,38 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
     rekogNodeId.append(entry['entry']['id'])
     rekogModifiedDate.append(entry['entry']['modifiedAt'])
 
+    # So we have all the information now, but we need to build the elastic payload for each record
+    #for index in range(len(rekogLabels)):
+    
+    #print('label list ->' + str(rekogLabels).split(','))
+
+    #print('split info for labels -> \n')
+
+    for i in str(rekogLabels).split(','):
+      currentTag = i.replace('[','').replace(']','').replace('\'','').strip()
+
+      #print(currentTag)
+
+      doc = {
+    'name': '\''+rekogName[-1]+'\'',
+    'tag': '\''+currentTag+'\'',
+}
+      send2Elastic.sendIndRecToelastic(doc,counter)
+      counter = counter + 1
+      #doc = "" #flush doc now
+
+
+  #print ('doc payload is -> '+ docPayload)
+
+  #send2Elastic.main(docPayload)
+
+ 
+  # now feed docpayload to elastic
+
   rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
   rekogDF.rename(columns=cols,inplace=True)
 
-  print (rekogDF)
+  #print (rekogDF)
   #rekogDF.to_excel('rekogfiles.xlsx')
 
   return rekogDF
