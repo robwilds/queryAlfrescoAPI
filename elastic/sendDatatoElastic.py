@@ -18,7 +18,7 @@ es = Elasticsearch(
 
 
        
-def gendata(docs,optype="index",index="samplerekog"):
+def gendata(docs,optype="index",ind="samplerekog"):
     #docs = [{"name": "Rob", "tag": "male"},{"name": "Rob", "tag": "weapon"}]
     for doc in docs:
         yield {
@@ -26,6 +26,11 @@ def gendata(docs,optype="index",index="samplerekog"):
             "_index": index,
             "doc": doc
         }
+
+def clearIndexes(ind="samplerekog"):
+    #clear the index(ces)
+    indices = [ind]
+    es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
 
 def sendIndRecToelastic(doc,id):
     """ doc = {

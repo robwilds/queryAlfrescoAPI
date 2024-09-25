@@ -118,6 +118,9 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
   #now loop and get all images to download and populate data frame columns
   counter = 1
+  #clear indexes in elastic now
+  send2Elastic.clearIndexes()
+
   for entry in pullListofrekogfiles()['list']['entries']:
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
     rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
@@ -143,19 +146,20 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
     #print('split info for labels -> \n')
 
-    for i in str(rekogLabels).split(','):
+    for i in str(rekogLabels[-1]).split(','):
       currentTag = i.replace('[','').replace(']','').replace('\'','').strip()
 
       #print(currentTag)
-
+      #setup doc for current tag
       doc = {
     'name': '\''+rekogName[-1]+'\'',
     'tag': '\''+currentTag+'\'',
 }
-      send2Elastic.sendIndRecToelastic(doc,counter)
+      #process the current doc to elastic
+      #print('doc entry for '+rekogName[-1]+ ' is '+ str(doc) )
       counter = counter + 1
       #doc = "" #flush doc now
-
+      send2Elastic.sendIndRecToelastic(doc,counter)  
 
   #print ('doc payload is -> '+ docPayload)
 
