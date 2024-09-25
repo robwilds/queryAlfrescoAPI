@@ -15,8 +15,6 @@ es = Elasticsearch(
   cloud_id = '''9ce78c3f7ab445339ebb510a901604fd:dXMtZWFzdC0yLmF3cy5lbGFzdGljLWNsb3VkLmNvbSQ3N2QxZDJiNGZjNWI0M2IxYmJiZjFmZDc1MzE1NmMyNyRhOTIyOWE3OWU1NTM0YjBlYTRmZTZlZjBlNjU1OTUxNQ==''',
   http_auth = ('enterprise_search','hylandforce1')
   )
-
-
        
 def gendata(docs,optype="index",ind="samplerekog"):
     #docs = [{"name": "Rob", "tag": "male"},{"name": "Rob", "tag": "weapon"}]
@@ -30,7 +28,7 @@ def gendata(docs,optype="index",ind="samplerekog"):
 def clearIndexes(ind="samplerekog"):
     #clear the index(ces)
     indices = [ind]
-    es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
+    return(es.delete_by_query(index=indices, body={"query": {"match_all": {}}}))
 
 def sendIndRecToelastic(doc,id):
     """ doc = {
@@ -53,8 +51,8 @@ def main(docs,index="samplerekog"):
   ) """
 
   #clear the index(ces)
-  indices = [index]
-  es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
+  #indices = [index]
+  #es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
 
   #print ("es info -> " + str(es.info()))
 
@@ -84,9 +82,9 @@ def main(docs,index="samplerekog"):
   
   #print ('\ndocs info-> '+ newDoc)
 
-  print('\ncalling helpers bulk**')
+  #print('\ncalling helpers bulk**')
 
-  print(json.loads(docs))
+  #print(json.loads(docs))
   #helpers.bulk(es, json.load(docs))
   #time.sleep(10)
    

@@ -123,6 +123,30 @@
           ]
         }
       },
+      "/clearelastic": {
+        "get": {
+          "summary": "clears the elastic indexes to start the reporting fresh",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {}
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "Invalid response"
+            }
+          },
+          "security": [
+          ]
+        }
+      },
       "/createfileplan": {
         "post": {
           "tags": [

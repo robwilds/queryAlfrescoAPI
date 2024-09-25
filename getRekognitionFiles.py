@@ -125,12 +125,8 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
     #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
     rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
     rekogName.append(entry['entry']['name'])
-
-    
     #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
-    
     rekogLabels.append(getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
-    
     #print('Tag value from caller -> ' + getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
     #added to identify hyland employees
     #print ('\\n\\n debug for schema:textLines -> '+ str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))

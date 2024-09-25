@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flask import Flask,json,Response,request,redirect
 from flask_cors import CORS, cross_origin
 from flask_swagger_ui import get_swaggerui_blueprint
+import elastic.sendDatatoElastic as elastic
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -66,6 +67,11 @@ def auditentryfornode():
 @cross_origin('*')
 def getRekognitionFiles():
     return Response(grf.main(request.root_url).to_json(orient="records"))
+
+@app.route("/clearelastic")
+@cross_origin('*')
+def clearelastic():
+    return Response(elastic.clearIndexes() )
 
 @app.route("/createfileplan",methods = ['POST','OPTIONS'])
 @cross_origin('*')
