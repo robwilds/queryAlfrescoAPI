@@ -2,10 +2,10 @@
 .git
 .gitignore
 .gitattributes
-#.env
-#.env.swp
-#**/*.env
-#**/*.env.*
+.env
+.env.swp
+**/*.env
+**/*.env.*
 
 # CI
 .codeclimate.yml
@@ -72,11 +72,6 @@ docs/_build/
 
 # PyBuilder
 target/
-
-# Virtual environment
-#.env
-#.venv/
-#venv/
 
 # PyCharm
 .idea
