@@ -4,10 +4,10 @@ queryalfapi:
   ports:
     - 9600:9600
   environment:
-    BASE_URL: "http://clive-aws-booth.sales-demohyland.com"
+    BASE_URL: "http://localhost:8080"
     API_URL: "/static/swagger.json"
-    user: "demo"
-    pass: "demo"
+    user: "admin"
+    pass: "admin"
     devpath: "../src/assets/"
     prodpath: "./static/"
     port: "9600"
@@ -18,3 +18,4 @@ queryalfapi:
     baseFilePlanID: "6dcf6ac5-0d28-4fe4-8f6a-c50d287fe421"
   links:
     - alfresco
+    - content

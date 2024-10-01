@@ -14,7 +14,10 @@ run from the command line from the root of the project: pip3 install -r requirem
 
 
 ## Environment Setup
-be sure to create a .env file in the root of the project.  There's a envTemplate.txt file that can be used as a starter.
+
+This project is inteded to run as a container (see docker-compose.yml).  within said file are environment variables that should be altered to fit your application
+
+You can also reate a .env file in the root of the project.  There's a envTemplate.txt file that can be used as a starter.
 
 ## Process Flow
 
@@ -22,7 +25,7 @@ This project is configure like a micro-service.  Run the app by using the comman
 
 ## Configured EndPoints
 
-access the root of the microservice:  http://<hostname>:9600.  you will see a list of end points that are configured.  Swagger interface coming soon!
+access the root of the microservice:  http://<hostname>:9600.  you will see a list of end points that are configured within a swagger interface
 
 ## Running the microservice
 
