@@ -25,9 +25,7 @@ filePlanID = ""
 retentionScheduleID=""
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
-    #for clive site: filePlanId is workspace://SpacesStore/edf97708-412b-461d-9229-fd0b576b73d6
-    #for local in docker on small macbook pro is workspace://SpacesStore/07cbdcf4-e18e-4783-8bdc-f4e18e3783f1
-
+    print("inside create cateogry\n")
     postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+baseFilePlanID+"/categories?autoRename=true"
     #Post = /file-plans/{filePlanId}/categories  
     body="""{{
