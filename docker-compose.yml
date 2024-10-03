@@ -15,7 +15,8 @@ queryalfapi:
     elasticcloudid: "9ce78c3f7ab445339ebb510a901604fd:dXMtZWFzdC0yLmF3cy5lbGFzdGljLWNsb3VkLmNvbSQ3N2QxZDJiNGZjNWI0M2IxYmJiZjFmZDc1MzE1NmMyNyRhOTIyOWE3OWU1NTM0YjBlYTRmZTZlZjBlNjU1OTUxNQ=="
     elasticuser: "enterprise_search"
     elasticpassword: "hylandforce1"
-    baseFilePlanID: "6dcf6ac5-0d28-4fe4-8f6a-c50d287fe421"
+    baseFilePlanID: ""
+    baseFilePlanQuery: '{"query": {"query": "select * from rma:filePlan","language": "cmis"}}'
   links:
     - alfresco
     - content

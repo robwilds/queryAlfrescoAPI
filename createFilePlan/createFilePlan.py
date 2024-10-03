@@ -1,6 +1,7 @@
 # this is for the file plan creation from the angular app
 
 from queryAlf import runQuery
+import getRMBaseFilePlan
 import pandas as pd
 import json
 import os
@@ -26,7 +27,7 @@ retentionScheduleID=""
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
     print("inside create cateogry\n")
-    postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+baseFilePlanID+"/categories?autoRename=true"
+    postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+getRMBaseFilePlan.getRMBase()+"/categories?autoRename=true"
     #Post = /file-plans/{filePlanId}/categories  
     body="""{{
           "name": "{0}",
