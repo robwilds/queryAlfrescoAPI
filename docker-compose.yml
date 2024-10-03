@@ -1,22 +1,24 @@
-queryalfapi:
-  image: wildsdocker/queryalfapi:v2
-  mem_limit: 200m
-  ports:
-    - 9600:9600
-  environment:
-    BASE_URL: "http://alfresco:8080"
-    API_URL: "/static/swagger.json"
-    user: "admin"
-    pass: "admin"
-    devpath: "../src/assets/"
-    prodpath: "./static/"
-    port: "9600"
-    elasticapikey: ""
-    elasticcloudid: "9ce78c3f7ab445339ebb510a901604fd:dXMtZWFzdC0yLmF3cy5lbGFzdGljLWNsb3VkLmNvbSQ3N2QxZDJiNGZjNWI0M2IxYmJiZjFmZDc1MzE1NmMyNyRhOTIyOWE3OWU1NTM0YjBlYTRmZTZlZjBlNjU1OTUxNQ=="
-    elasticuser: "enterprise_search"
-    elasticpassword: "hylandforce1"
-    baseFilePlanID: ""
-    baseFilePlanQuery: '{"query": {"query": "select * from rma:filePlan","language": "cmis"}}'
-  links:
-    - alfresco
-    - content
+version: "2"
+services:
+  queryalfapi:
+    image: wildsdocker/queryalfapi:v2
+    mem_limit: 200m
+    ports:
+      - 9600:9600
+    environment:
+      BASE_URL: "http://alfresco:8080"
+      API_URL: "/static/swagger.json"
+      user: "admin"
+      pass: "admin"
+      devpath: "../src/assets/"
+      prodpath: "./static/"
+      port: "9600"
+      elasticapikey: ""
+      elasticcloudid: "9ce78c3f7ab445339ebb510a901604fd:dXMtZWFzdC0yLmF3cy5lbGFzdGljLWNsb3VkLmNvbSQ3N2QxZDJiNGZjNWI0M2IxYmJiZjFmZDc1MzE1NmMyNyRhOTIyOWE3OWU1NTM0YjBlYTRmZTZlZjBlNjU1OTUxNQ=="
+      elasticuser: "enterprise_search"
+      elasticpassword: "hylandforce1"
+      baseFilePlanID: ""
+      baseFilePlanQuery: '{"query": {"query": "select * from rma:filePlan","language": "cmis"}}'
+    links:
+      - alfresco
+      - content
