@@ -26,25 +26,43 @@ filePlanID = ""
 retentionScheduleID=""
 
 def createCategory(filePlanId,classificationgeneral,grsid) -> str | None:
-    print("inside create cateogry\n")
-    postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+getRMBaseFilePlan.getRMBase()+"/categories?autoRename=true"
-    #Post = /file-plans/{filePlanId}/categories  
-    body="""{{
-          "name": "{0}",
-          "properties" :
-          {{
-			"rma:vitalRecordIndicator":"false",
-    		"rma:identifier": "{1}"
-            }}
- 		}}""".format(classificationgeneral,grsid)
+    print("inside create category\n")
+
+
+    #first see if the category exists in the first place
+    findpostURL = BASE_URL + "/alfresco/api/-default-/public/search/versions/1/search"
+    findbody = """{{
+  "query": {{
+    "query": "cm:name:'{0}' AND TYPE:'rma:recordCategory'"
+  }}
+}}""".format(classificationgeneral)
     
-    print ("postURL for create category->"+postURL +"   body->\n"+body);
+    response = runQuery('post',findpostURL,findbody,user,passwd)
 
-    response = runQuery('post',postURL,body,user,passwd)
-    print('response is->'+str(response)+'\n')
+    if (response['list']['pagination']['count'] == 1):
+        #there must be an existing category  if so return the nodeID of the existing category
+        print ('\nexisting category found (class general) -> '+ classificationgeneral + ' returning: ' + str(response['list']['entries'][0]['entry']['id']))
+        return response['list']['entries'][0]['entry']['id']
+    
+    else:
+        postURL = BASE_URL + "/alfresco/api/-default-/public/gs/versions/1/file-plans/"+getRMBaseFilePlan.getRMBase()+"/categories?autoRename=true"
+        #Post = /file-plans/{filePlanId}/categories  
+        body="""{{
+            "name": "{0}",
+            "properties" :
+            {{
+                "rma:vitalRecordIndicator":"false",
+                "rma:identifier": "{1}"
+                }}
+            }}""".format(classificationgeneral,grsid)
+        
+        print ("postURL for create category->"+postURL +"   body->\n"+body);
 
-    #print(recordCategoryID)
-    return (response['entry']['id'])
+        response = runQuery('post',postURL,body,user,passwd)
+        print('response is->'+str(response)+'\n')
+
+        #print(recordCategoryID)
+        return (response['entry']['id'])
 
 def SearchFilePlanId():
     print(NotImplementedError);
@@ -65,19 +83,41 @@ def createFolder(recSubCategoryId,name):
     return(subFolderID)
 
 def createSubCategory(recCategoryId,recordTitle):
-    postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+recCategoryId+"/children"
-    body="""{{
-    "name":"{0}",
-    "nodeType":"rma:recordCategory",
-    "hasRetentionSchedule": true}}""".format(recordTitle)
+    
+    print('\ninside create sub category\n')
+    #first see if the category exists in the first place
+    findpostURL = BASE_URL + "/alfresco/api/-default-/public/search/versions/1/search"
+    findbody = """{{
+  "query": {{
+    "query": "cm:name:'{0}'  AND PARENT:'workspace://SpacesStore/{1}'"
+  }}
+}}""".format(recordTitle,recCategoryId)
+    
+    response = runQuery('post',findpostURL,findbody,user,passwd)
 
-    response = runQuery('post',postURL,body,user,passwd)
-    print('response from sub category call is->'+str(response)+'\n')
-    subCategoryId = response['entry']['id']
-    #print('sub category id->'+ subCategoryId)
-    return(subCategoryId)
+    print('response from sub category check ->' + str(response) + '\n')
+    if (response['list']['pagination']['count'] >= 1):
+        #there must be an existing subcategory  if so return the nodeID of the existing subcategory
+        print ('\nexisting subcategory found (recordtitle) -> '+ recordTitle +' returning: ' + str(response['list']['entries'][0]['entry']['id']))
+        return response['list']['entries'][0]['entry']['id']
+    
+    else:
+        postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+recCategoryId+"/children"
+        body="""{{
+        "name":"{0}",
+        "nodeType":"rma:recordCategory",
+        "hasRetentionSchedule": true}}""".format(recordTitle)
+
+        response = runQuery('post',postURL,body,user,passwd)
+        print('response from sub category call is->'+str(response)+'\n')
+        subCategoryId = response['entry']['id']
+        #print('sub category id->'+ subCategoryId)
+        return(subCategoryId)
 
 def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositionInstruction,isrecordlevel):
+    #check if retention schedule already exists..if so skip but we can update in a future update
+
+    
     postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/record-categories/"+subRecCategoryId+"/retention-schedules"
     #cleans the retention instructions now
     fullDispositionInstruction = fullDispositionInstruction.replace('"','')
@@ -93,7 +133,7 @@ def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositio
   }}""".format(dispositionAuthority,fullDispositionInstruction,isrecordlevel)
     
     response = runQuery('post',postURL,body,user,passwd)
-    print('response from retention schedule call is->'+str(response)+'\n'+'with body->'+body+'\n')
+    print('\nresponse from retention schedule call is->'+str(response)+'\n'+'with body->'+body+'\n')
     retentionScheduleID = response['entry']['id']
     #print('sub category id->'+ subCategoryId)
     return(retentionScheduleID)
@@ -135,7 +175,7 @@ def main(inputJson):
         recordCategoryID = createCategory(baseFilePlanID,key['RecordTitle'],key['GRSID'])
         print ('record cat id is->'+recordCategoryID)
 
-        # now create the subcategory using the same createCategory function
+        # now create the subcategory 
         subRecordID = createSubCategory(recordCategoryID,key['ClassificationGeneral'])
         print ('sub rec category id is->' + subRecordID)
 
