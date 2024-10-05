@@ -134,9 +134,16 @@ def createRetentionSchedule(subRecCategoryId,dispositionAuthority,fullDispositio
     
     response = runQuery('post',postURL,body,user,passwd)
     print('\nresponse from retention schedule call is->'+str(response)+'\n'+'with body->'+body+'\n')
-    retentionScheduleID = response['entry']['id']
+    
+    try:
+        retentionScheduleID = response['entry']['id']
+        return(retentionScheduleID)
+    except:
+        print("error with file plan addition -> "+str(response)+'\n')
+        return(0)
+
     #print('sub category id->'+ subCategoryId)
-    return(retentionScheduleID)
+    #return(retentionScheduleID)
     
 def createRetentionStep(retentionScheduleID,retentionType,retentionTime,retentionPeriod,description):
     postURL = BASE_URL+"/alfresco/api/-default-/public/gs/versions/1/retention-schedules/"+retentionScheduleID+"/retention-steps"
@@ -181,19 +188,23 @@ def main(inputJson):
 
         # now add the retention schedule
         retentionScheduleID = createRetentionSchedule(subRecordID,key['DispositionAuthority'],key['FullDispositionInstruction'],True)
-        print('retention schedule id is->'+retentionScheduleID)
+        print('retention schedule id is-> '+ str(retentionScheduleID))
         
-        # now add the CUTOFF step
-        retentionStepsID = createRetentionStep(retentionScheduleID,"cutoff",0,'immediately','cutoff immediately')
-        print('retention step id for cutoff is->'+retentionStepsID)
+        if (retentionScheduleID == 0):
+            print ('skipping creation of retention steps since there\'s an issue with retention schedule creation\n')
 
-        # now add the Destroy step
-        retentionStepsID = createRetentionStep(retentionScheduleID,"transfer",key['RetentionYears'],"year",'transfer in 3 years or whatever')
-        print('retention step id for destroy is->'+retentionStepsID)
+        else:
+            # now add the CUTOFF step
+            retentionStepsID = createRetentionStep(retentionScheduleID,"cutoff",0,'immediately','cutoff immediately')
+            print('retention step id for cutoff is->'+retentionStepsID)
 
-        # now put the folder on the subcategory..call it "all records" for now
-        subFolderID = createFolder(subRecordID,'AllRecords')
-        print ('sub folder id is->'+subFolderID)
+            # now add the Destroy step
+            retentionStepsID = createRetentionStep(retentionScheduleID,"transfer",key['RetentionYears'],"year",'transfer in 3 years or whatever')
+            print('retention step id for destroy is->'+retentionStepsID)
+
+            # now put the folder on the subcategory..call it "all records" for now
+            subFolderID = createFolder(subRecordID,'AllRecords')
+            print ('sub folder id is->'+subFolderID)
 
 
     #return a json list of the nodeids created (for the categories)
