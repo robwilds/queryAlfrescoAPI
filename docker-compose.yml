@@ -6,10 +6,10 @@ services:
     ports:
       - 9600:9600
     environment:
-      BASE_URL: "http://alfresco:8080"
+      BASE_URL: "http://clive-aws-booth.sales-demohyland.com"
       API_URL: "/static/swagger.json"
-      user: "admin"
-      pass: "admin"
+      user: "demo"
+      pass: "demo"
       devpath: "../src/assets/"
       prodpath: "./static/"
       port: "9600"

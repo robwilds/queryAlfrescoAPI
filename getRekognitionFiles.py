@@ -155,7 +155,13 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
       #print('doc entry for '+rekogName[-1]+ ' is '+ str(doc) )
       counter = counter + 1
       #doc = "" #flush doc now
-      send2Elastic.sendIndRecToelastic(doc,counter)  
+
+      # check to see if elastic values are set..if not then skip this step!
+      if (os.getenv("elasticapikey") != ""):
+        send2Elastic.sendIndRecToelastic(doc,counter)
+      else:
+        print("\nNo elastic config so skipping\n")
+      
 
   #print ('doc payload is -> '+ docPayload)
 
