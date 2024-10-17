@@ -52,6 +52,13 @@ def getRekognitionFiles():
 def clearelastic():
     return Response(elastic.clearIndexes() )
 
+@app.route("/analyzetext",methods = ['POST','OPTIONS'])
+@cross_origin()
+def analyzetext():
+    #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
+    return Response("not implemented yet")
+
+
 @app.route("/createfileplan",methods = ['POST','OPTIONS'])
 @cross_origin()
 def createFilePlan():

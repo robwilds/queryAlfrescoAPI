@@ -147,7 +147,47 @@
           ]
         }
       },
-      "/createfileplan": {
+      "/analyzetext": {
+        "post": {
+          "tags": [
+          ],
+          "summary": "Analyze text for sentiment and other metrics",
+          
+          "description": "plain text should be fed to this endpoint, the return is data indicating sentiment and other metrics.\n  LLama is used for this process",
+         
+          "produces": [
+            "application/json"
+          ],
+          
+          "parameters": [
+            {
+              "name": "formData",
+              "in": "body",
+              "description": "JSON payload",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "schema": {
+              }
+            },
+            "400": {
+              "description": "payload not correct"
+            },
+            "404": {
+              "description": "some other issue"
+            }
+          },
+          "security": [
+            {
+              "api_key": []
+            }
+          ]
+        }
+      },
+      {
         "post": {
           "tags": [
           ],
