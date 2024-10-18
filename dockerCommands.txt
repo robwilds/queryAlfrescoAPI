@@ -1,12 +1,13 @@
-docker stop queryAlfAPIv2
-docker rm queryAlfAPIv2
-docker rmi wildsdocker/queryalfapi:v2 --force
+docker stop queryAlfAPIv3
+docker rm queryAlfAPIv3
+docker rmi wildsdocker/queryalfapi:v3 --force
 
-docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/queryalfapi:v2 .
-docker push wildsdocker/queryalfapi:v2
+docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/queryalfapi:v3 .
+
 
 docker run -d -it -p 9600:9600 \
---name queryAlfAPIv2 \
+--name queryAlfAPIv3 \
 --mount type=bind,source=$(pwd),target=/python-docker \
-wildsdocker/queryalfapi:v2
+wildsdocker/queryalfapi:v3
 
+docker push wildsdocker/queryalfapi:v3

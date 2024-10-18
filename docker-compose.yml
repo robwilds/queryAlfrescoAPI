@@ -1,15 +1,15 @@
 version: "2"
 services:
   queryalfapi:
-    image: wildsdocker/queryalfapi:v2
+    image: wildsdocker/queryalfapi:v3
     mem_limit: 200m
     ports:
       - 9600:9600
     environment:
-      BASE_URL: "http://clive-aws-booth.sales-demohyland.com"
+      BASE_URL: "http://localhost:8080"
       API_URL: "/static/swagger.json"
-      user: "demo"
-      pass: "demo"
+      user: "admin"
+      pass: "admin"
       devpath: "../src/assets/"
       prodpath: "./static/"
       port: "9600"
@@ -19,6 +19,242 @@ services:
       elasticpassword: "hylandforce1"
       baseFilePlanID: ""
       baseFilePlanQuery: '{"query": {"query": "select * from rma:filePlan","language": "cmis"}}'
-    links:
+  alfresco:
+    # image: quay.io/alfresco/alfresco-content-repository:23.3.0
+    image: quay.io/alfresco/alfresco-governance-repository-enterprise:23.3.0
+    mem_limit: 1900m
+    environment:
+      JAVA_TOOL_OPTIONS: >-
+        -Dencryption.keystore.type=JCEKS
+        -Dencryption.cipherAlgorithm=DESede/CBC/PKCS5Padding
+        -Dencryption.keyAlgorithm=DESede
+        -Dencryption.keystore.location=/usr/local/tomcat/shared/classes/alfresco/extension/keystore/keystore
+        -Dmetadata-keystore.password=mp6yc0UD9e
+        -Dmetadata-keystore.aliases=metadata
+        -Dmetadata-keystore.metadata.password=oKIWzVdEdA
+        -Dmetadata-keystore.metadata.algorithm=DESede
+      JAVA_OPTS: >-
+        -Ddb.driver=org.postgresql.Driver
+        -Ddb.username=alfresco
+        -Ddb.password=alfresco
+        -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
+        -Dindex.subsystem.name=elasticsearch
+        -Delasticsearch.createIndexIfNotExists=true
+        -Delasticsearch.host=elasticsearch
+        -Delasticsearch.port=9200
+        -Dshare.host=127.0.0.1
+        -Dshare.port=8080
+        -Dalfresco.host=localhost
+        -Dalfresco.port=8080
+        -Dcsrf.filter.enabled=false
+        -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
+        -Dmessaging.broker.url="failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true"
+        -Ddeployment.method=DOCKER_COMPOSE
+        -Dtransform.service.enabled=true
+        -Dtransform.service.url=http://transform-router:8095
+        -Dsfs.url=http://shared-file-store:8099/
+        -DlocalTransform.core-aio.url=http://transform-core-aio:8090/
+        -Ddsync.service.uris=http://localhost:9090/alfresco
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 1m
+  transform-router:
+    mem_limit: 512m
+    image: quay.io/alfresco/alfresco-transform-router:4.1.4
+    environment:
+      JAVA_OPTS: >-
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+      ACTIVEMQ_URL: nio://activemq:61616
+      CORE_AIO_URL: http://transform-core-aio:8090
+      FILE_STORE_URL: >-
+        http://shared-file-store:8099/alfresco/api/-default-/private/sfs/versions/1/file
+    ports:
+      - "8095:8095"
+    depends_on:
+      - activemq
+  transform-core-aio:
+    image: alfresco/alfresco-transform-core-aio:5.1.4
+    mem_limit: 1536m
+    environment:
+      JAVA_OPTS: >-
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+      ACTIVEMQ_URL: nio://activemq:61616
+      FILE_STORE_URL: >-
+        http://shared-file-store:8099/alfresco/api/-default-/private/sfs/versions/1/file
+    ports:
+      - "8090:8090"
+    depends_on:
+      - activemq
+  shared-file-store:
+    image: quay.io/alfresco/alfresco-shared-file-store:4.1.4
+    mem_limit: 512m
+    environment:
+      JAVA_OPTS: >-
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+      scheduler.content.age.millis: 86400000
+      scheduler.cleanup.interval: 86400000
+    ports:
+      - "8099:8099"
+    volumes:
+      - shared-file-store-volume:/tmp/Alfresco/sfs
+  share:
+    # image: quay.io/alfresco/alfresco-share:23.3.0
+    image: quay.io/alfresco/alfresco-governance-share-enterprise:23.3.0
+    mem_limit: 1g
+    environment:
+      REPO_HOST: "alfresco"
+      REPO_PORT: "8080"
+      JAVA_OPTS: >-
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+        -Dalfresco.host=localhost
+        -Dalfresco.port=8080
+        -Dalfresco.context=alfresco
+        -Dalfresco.protocol=http
+  postgres:
+    image: postgres:14.4
+    mem_limit: 512m
+    environment:
+      - POSTGRES_PASSWORD=alfresco
+      - POSTGRES_USER=alfresco
+      - POSTGRES_DB=alfresco
+    command: postgres -c max_connections=300 -c log_min_messages=LOG
+    ports:
+      - "5432:5432"
+  elasticsearch:
+    image: elasticsearch:7.10.1
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 9200:9200
+      - 9300:9300
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    ports:
+      - "5601:5601"
+    environment:
+      SERVER_NAME: kibana.example.org
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+  search:
+    image: quay.io/alfresco/alfresco-elasticsearch-live-indexing:4.1.0
+    mem_limit: 1g
+    depends_on:
+      elasticsearch:
+        condition: service_started
+      search-reindexing:
+        condition: service_completed_successfully
+    environment:
+      ALFRESCO_ACCEPTED_CONTENT_MEDIA_TYPES_CACHE_BASE_URL: >-
+        http://transform-core-aio:8090/transform/config
+      ALFRESCO_SHAREDFILESTORE_BASEURL: >-
+        http://shared-file-store:8099/alfresco/api/-default-/private/sfs/versions/1/file/
+      SPRING_ACTIVEMQ_BROKERURL: nio://activemq:61616
+      SPRING_ELASTICSEARCH_REST_URIS: http://elasticsearch:9200
+  search-reindexing:
+    image: quay.io/alfresco/alfresco-elasticsearch-reindexing:4.1.0
+    mem_limit: 1g
+    restart: on-failure:10
+    environment:
+      ALFRESCO_ACCEPTED_CONTENT_MEDIA_TYPES_CACHE_BASE_URL: >-
+        http://transform-core-aio:8090/transform/config
+      SPRING_ACTIVEMQ_BROKERURL: nio://activemq:61616
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/alfresco
+      SPRING_DATASOURCE_USERNAME: alfresco
+      SPRING_DATASOURCE_PASSWORD: alfresco
+      SPRING_ELASTICSEARCH_REST_URIS: http://elasticsearch:9200
+    depends_on:
+      postgres:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      alfresco:
+        condition: service_healthy
+  activemq:
+    image: alfresco/alfresco-activemq:5.18-jre17-rockylinux8
+    mem_limit: 1g
+    ports:
+      - "8161:8161" # Web Console
+      - "5672:5672" # AMQP
+      - "61616:61616" # OpenWire
+      - "61613:61613" # STOMP
+  digital-workspace:
+    image: quay.io/alfresco/alfresco-digital-workspace:5.0.0
+    mem_limit: 128m
+    environment:
+      APP_CONFIG_PROVIDER: "ECM"
+      APP_CONFIG_AUTH_TYPE: "BASIC"
+      BASE_PATH: ./
+      APP_CONFIG_PLUGIN_PROCESS_SERVICE: "false"
+      APP_CONFIG_PLUGIN_MICROSOFT_ONLINE: "false"
+      APP_BASE_SHARE_URL: "http://localhost:8080/workspace/#/preview/s"
+  control-center:
+    image: quay.io/alfresco/alfresco-control-center:9.0.0
+    mem_limit: 128m
+    environment:
+      APP_CONFIG_PROVIDER: "ECM"
+      APP_CONFIG_AUTH_TYPE: "BASIC"
+      BASE_PATH: ./
+  proxy:
+    image: alfresco/alfresco-acs-nginx:3.4.2
+    mem_limit: 128m
+    ports:
+      - "8080:8080"
+    depends_on:
+      - digital-workspace
       - alfresco
-      - content
+      - share
+      - control-center
+    volumes:
+      - ${PWD}/nginxforalfresco.conf:/etc/nginx/nginx.conf
+  sync-service:
+    image: quay.io/alfresco/service-sync:4.0.1
+    mem_limit: 1g
+    environment:
+      JAVA_OPTS: >-
+        -Dsql.db.driver=org.postgresql.Driver
+        -Dsql.db.url=jdbc:postgresql://postgres:5432/alfresco
+        -Dsql.db.username=alfresco
+        -Dsql.db.password=alfresco
+        -Dmessaging.broker.host=activemq
+        -Drepo.hostname=alfresco
+        -Drepo.port=8080
+        -Ddw.server.applicationConnectors[0].type=http
+        -XX:MinRAMPercentage=50
+        -XX:MaxRAMPercentage=80
+    ports:
+      - "9090:9090"
+  dozzle:
+    image: amir20/dozzle:latest
+    environment:
+      DOZZLE_BASE: "/dozzle"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+volumes:
+  shared-file-store-volume:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

@@ -4,6 +4,7 @@ import auditApps
 import auditEntryForNode
 import getRekognitionFiles as grf
 import createFilePlan.createFilePlan as CFP
+import getCommentsForNode
 import os
 from dotenv import load_dotenv
 from flask import Flask,jsonify,Response,request,redirect
@@ -52,12 +53,16 @@ def getRekognitionFiles():
 def clearelastic():
     return Response(elastic.clearIndexes() )
 
+@app.route("/getcomments/<nodeid>")
+def getcomments(nodeid):
+    return Response(getCommentsForNode.getComments(nodeid))
+
 @app.route("/analyzetext",methods = ['POST','OPTIONS'])
 @cross_origin()
 def analyzetext():
     #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
+    print("\nanalyze text not implemented")
     return Response("not implemented yet")
-
 
 @app.route("/createfileplan",methods = ['POST','OPTIONS'])
 @cross_origin()

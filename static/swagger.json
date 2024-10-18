@@ -1,236 +1,244 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "This is swagger for the custom alfresco api python microservice",
-      "version": "1.0.7",
-      "title": "QueryAlfAPI",
-      "termsOfService": "http://swagger.io/terms/",
-      "contact": {
-        "email": "robert.wilds@hyland.com"
-      },
-      "license": {
-        "name": "Apache 2.0",
-        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  "swagger": "2.0",
+  "info": {
+    "description": "This is swagger for the custom alfresco api python microservice",
+    "version": "1.0.7",
+    "title": "QueryAlfAPI",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "robert.wilds@hyland.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:9600",
+  "basePath": "/",
+  "tags": [
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/getcomments/{nodeid}": {
+      "parameters": [
+          {
+            "in": "path",
+              "name": "nodeid",
+              "description": "alfresco document nodeid",
+              "required": true,
+            "type": "string"
+          }
+        ],
+      "get": {
+        "summary": "gets comments for a given node",
+        
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          ""
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+                
+            }
+          }
+        }
       }
     },
-    "host": "localhost:9600",
-    "basePath": "/",
-    "tags": [
-    ],
-    "schemes": [
-      "http"
-    ],
-    "paths": {
-      "/peoplegroups": {
-        "get": {
-          "summary": "gets users and associated groups",
-          "description": "",
-          "operationId": "",
-          "consumes": [
-            ""
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-                  
-              }
+    "/peoplegroups": {
+      "get": {
+        "summary": "gets users and associated groups",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          ""
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+                
             }
           }
-        }
-      },
-      "/auditentryfornode": {
-        "get": {
-          
-          "summary": "Get audit entry for a node",
-          "description": "JSON response provided with audit entries for a given node.  ",
-          "operationId": "nodeid",
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "in": "query",
-              "name": "nodeid",
-              "description": "this is a nodeID from alfresco",
-              "required": true
-            }
-          ],
-          "responses": {
-            "405": {
-              "description": "Invalid input"
-            },
-            "200": {
-              "description": "success"
-            },
-            "500": {
-              "description": "Issue with python code"
-            }
-          }
-        }
-      },
-      "/auditapps": {
-        "get": {
-          "summary": "show enabled audit apps",
-          "description": "",
-          "operationId": "",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-              }
-            },
-            "400": {
-              "description": "Invalid status value"
-            }
-          }
-        }
-      },
-      "/getrekognitionfiles": {
-        "get": {
-          "summary": "get all AI:Labels files",
-          "description": "get JSON response of all files with aspect AI:Labels and download the jpeg to the static folder on the server\nThis will also send data to elastic with the index called sampleRekog",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {}
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-              }
-            },
-            "400": {
-              "description": "Invalid tag value"
-            }
-          },
-          "security": [
-          ]
-        }
-      },
-      "/clearelastic": {
-        "get": {
-          "summary": "clears the elastic indexes to start the reporting fresh",
-          "description": "",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {}
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-              }
-            },
-            "400": {
-              "description": "Invalid response"
-            }
-          },
-          "security": [
-          ]
-        }
-      },
-      "/analyzetext": {
-        "post": {
-          "tags": [
-          ],
-          "summary": "Analyze text for sentiment and other metrics",
-          
-          "description": "plain text should be fed to this endpoint, the return is data indicating sentiment and other metrics.\n  LLama is used for this process",
-         
-          "produces": [
-            "application/json"
-          ],
-          
-          "parameters": [
-            {
-              "name": "formData",
-              "in": "body",
-              "description": "JSON payload",
-              "required": true
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-              }
-            },
-            "400": {
-              "description": "payload not correct"
-            },
-            "404": {
-              "description": "some other issue"
-            }
-          },
-          "security": [
-            {
-              "api_key": []
-            }
-          ]
-        }
-      },
-      {
-        "post": {
-          "tags": [
-          ],
-          "summary": "create file plan based on json input",
-          
-          "description": "JSON provided from csv spreadsheet via angular application to create file plan.  \n The spreadsheet is based on NARA GRS CSV file\nHere's the json payload that must be fed to this end point:\n [{\n\"GRSID\": \"GRS_1.1.001\",\n \"RecordTitle\": \"Financial management and reporting administrative records\",\n\"ClassificationGeneral\": \"Financial Management\",\n\"LegalCitation\": \"\",\n\"Disposition\": \"Temporary\",\n\"RetentionYears\": \"3\",\n\"RetentionType\": \"Creation_Age\",\n\"EventTypeGeneral\": \"\",\n\"LongerRetentionAuthorized\": \"Yes\",\n\"DeviationsAllowed\": \"Yes\",\n\"FullDispositionInstruction\": \"Destroy when 3 years old but longer retention is authorized if needed for business use.\",\n\"DispositionAuthority\": \"DAA-GRS-2016-0013-0001\",\n\"Supersededby\": \"\",\n\"LastUpdated\": \"23-Jun\",\n\"Comments\": \"6/2023: Corrected GRS ID.\"}]",
-         
-          "produces": [
-            "application/json"
-          ],
-          
-          "parameters": [
-            {
-              "name": "formData",
-              "in": "body",
-              "description": "JSON payload",
-              "required": true
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "successful operation",
-              "schema": {
-              }
-            },
-            "400": {
-              "description": "payload not correct"
-            },
-            "404": {
-              "description": "some other issue"
-            }
-          },
-          "security": [
-            {
-              "api_key": []
-            }
-          ]
         }
       }
+    },
+    "/auditentryfornode": {
+      "get": {
+        
+        "summary": "Get audit entry for a node",
+        "description": "JSON response provided with audit entries for a given node.  ",
+        "operationId": "nodeid",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "nodeid",
+            "description": "this is a nodeID from alfresco",
+            "required": true
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          },
+          "200": {
+            "description": "success"
+          },
+          "500": {
+            "description": "Issue with python code"
+          }
+        }
+      }
+    },
+    "/auditapps": {
+      "get": {
+        "summary": "show enabled audit apps",
+        "description": "",
+        "operationId": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/getrekognitionfiles": {
+      "get": {
+        "summary": "get all AI:Labels files",
+        "description": "get JSON response of all files with aspect AI:Labels and download the jpeg to the static folder on the server",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        },
+        "security": [
+        ]
+      }
+    },
+    "/createfileplan": {
+      "post": {
+        "tags": [
+        ],
+        "summary": "create file plan based on json input",
+        
+        "description": "JSON provided from csv spreadsheet via angular application to create file plan.  \n The spreadsheet is based on NARA GRS CSV file\nHere's the json payload that must be fed to this end point:\n [{\n\"GRSID\": \"GRS_1.1.001\",\n \"RecordTitle\": \"Financial management and reporting administrative records\",\n\"ClassificationGeneral\": \"Financial Management\",\n\"LegalCitation\": \"\",\n\"Disposition\": \"Temporary\",\n\"RetentionYears\": \"3\",\n\"RetentionType\": \"Creation_Age\",\n\"EventTypeGeneral\": \"\",\n\"LongerRetentionAuthorized\": \"Yes\",\n\"DeviationsAllowed\": \"Yes\",\n\"FullDispositionInstruction\": \"Destroy when 3 years old but longer retention is authorized if needed for business use.\",\n\"DispositionAuthority\": \"DAA-GRS-2016-0013-0001\",\n\"Supersededby\": \"\",\n\"LastUpdated\": \"23-Jun\",\n\"Comments\": \"6/2023: Corrected GRS ID.\"}]",
+       
+        "produces": [
+          "application/json"
+        ],
+        
+        "parameters": [
+          {
+            "name": "formData",
+            "in": "body",
+            "description": "JSON payload",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+            }
+          },
+          "400": {
+            "description": "payload not correct"
+          },
+          "404": {
+            "description": "some other issue"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/analyzetext": {
+      "post": {
+        "tags": [
+        ],
+        "summary": "analyze raw text with LLama3.2",
+        
+        "description": "raw text posted to this endpoint will be passed to LLama for sentiment detection",
+       
+        "produces": [
+          "application/json"
+        ],
+        
+        "parameters": [
+          {
+            "name": "formData",
+            "in": "body",
+            "description": "JSON payload",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+            }
+          },
+          "400": {
+            "description": "payload not correct"
+          },
+          "404": {
+            "description": "some other issue"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
-  ,
-    "externalDocs": {
-      "description": "Find out more about Swagger",
-      "url": "http://swagger.io"
-    }
+    
   }
+,
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
