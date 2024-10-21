@@ -4,7 +4,7 @@ from llama_cpp_agent.providers import LlamaCppPythonProvider
 from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
 
-SYSTEM_PROMPT = "You are a useful chatbot" #Customize system prompt to fit your need
+SYSTEM_PROMPT = "analyze sentiment" #Customize system prompt to fit your need
 CHAT_TEMPLATE = MessagesFormatterType.LLAMA_3  #Prompt format to use
 MODEL_PATH = "Llama-3.2-1B-Instruct-Q4_K_M.gguf" #Llama-3.2-1B-Instruct-Q4_K_M.gguf used for chat bot style interaction https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
 TEMPERATURE=0.3  #For small models, low temperature is often better
@@ -34,7 +34,7 @@ agent = LlamaCppAgent(
     debug_output=False
 )
 
-prompt = "who was the best president"
+prompt = "does this sound positive or negative: I don't like bananas"
 
 response = agent.get_chat_response(
     prompt,

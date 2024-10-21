@@ -7,3 +7,7 @@ for reference: https://medium.com/pythoneers/llama-3-2-1b-and-3b-small-but-might
 information about llama-cpp-python: https://pypi.org/project/llama-cpp-python/
 
 information about sentiment detection with llama: https://github.com/Rajeshwari26/RajemaTech-Tamil/tree/Sentiment_analysis_Llama3.2
+
+https://www.mlexpert.io/blog/llama-3
+
+
