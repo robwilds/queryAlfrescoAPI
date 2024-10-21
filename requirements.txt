@@ -11,6 +11,8 @@ elasticsearch==8.14.0
 elasticsearch-async==6.2.0
 llama_models==0.0.42
 llama_stack==0.0.42
+llama-cpp-agent==0.2.35
+llama_cpp_python==0.3.1
 lxml==5.3.0
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
