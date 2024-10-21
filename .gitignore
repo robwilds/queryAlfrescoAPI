@@ -6,6 +6,7 @@ __pycache__/
 *$py.class
 #.env
 #.env.*
+.DS_Store
 
 #LLama files
 *.gguf
