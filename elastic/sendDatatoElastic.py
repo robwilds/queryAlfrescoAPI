@@ -42,9 +42,10 @@ def sendIndRecToelastic(doc,id):
 
     try:
         resp = es.index(index="samplerekog", id=id, document=doc)
+        print(resp['result'])
     except:
-         resp = '{"result": "issue indexing....is elastic id correct and server ready?"}'
-    print(resp['result'])
+        print("issue indexing doc: "+str(doc) + "id: "+str(id))
+    
 
 def main(docs,index="samplerekog"):
 

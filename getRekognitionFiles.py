@@ -142,25 +142,26 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
     #print('split info for labels -> \n')
 
-    for i in str(rekogLabels[-1]).split(','):
-      currentTag = i.replace('[','').replace(']','').replace('\'','').strip()
-
-      #print(currentTag)
-      #setup doc for current tag
-      doc = {
-    'name': '\''+rekogName[-1]+'\'',
-    'tag': '\''+currentTag+'\'',
-}
-      #process the current doc to elastic
-      #print('doc entry for '+rekogName[-1]+ ' is '+ str(doc) )
-      counter = counter + 1
-      #doc = "" #flush doc now
 
       # check to see if elastic values are set..if not then skip this step!
-      if (os.getenv("elasticapikey") != ""):
+    if (os.getenv("elasticapikey") != ""):
+
+      for i in str(rekogLabels[-1]).split(','):
+        currentTag = i.replace('[','').replace(']','').replace('\'','').strip()
+
+        #print(currentTag)
+        #setup doc for current tag
+        doc = {
+        'name': '\''+rekogName[-1]+'\'',
+        'tag': '\''+currentTag+'\'',
+        }
+        #process the current doc to elastic
+        #print('doc entry for '+rekogName[-1]+ ' is '+ str(doc) )
+        counter = counter + 1
+        #doc = "" #flush doc now
         send2Elastic.sendIndRecToelastic(doc,counter)
-      else:
-        print("\nNo elastic config so skipping\n")
+    else:
+      print("\nNo elastic config so skipping\n")
       
 
   #print ('doc payload is -> '+ docPayload)
@@ -170,8 +171,8 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
  
   # now feed docpayload to elastic
 
-  #rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
-  #rekogDF.rename(columns=cols,inplace=True)
+  rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
+  rekogDF.rename(columns=cols,inplace=True)
 
   #print (rekogDF)
   #rekogDF.to_excel('rekogfiles.xlsx')
