@@ -170,8 +170,8 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
  
   # now feed docpayload to elastic
 
-  rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
-  rekogDF.rename(columns=cols,inplace=True)
+  #rekogDF = pd.DataFrame([rekogSrc,rekogName,rekogLabels,rekogParent,rekogNodeId,rekogModifiedDate]).T
+  #rekogDF.rename(columns=cols,inplace=True)
 
   #print (rekogDF)
   #rekogDF.to_excel('rekogfiles.xlsx')

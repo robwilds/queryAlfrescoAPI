@@ -26,14 +26,24 @@ def clearIndexes(ind="samplerekog"):
 
     #clear the index(ces)
     indices = [ind]
-    return(es.delete_by_query(index=indices, body={"query": {"match_all": {}}}))
+
+    try:
+            statusMessage = es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
+    except:
+            statusMessage = "issue clearing"
+    
+    return(statusMessage)
 
 def sendIndRecToelastic(doc,id):
     """ doc = {
     'name': 'Rob',
     'tag': 'male'
 } """
-    resp = es.index(index="samplerekog", id=id, document=doc)
+
+    try:
+        resp = es.index(index="samplerekog", id=id, document=doc)
+    except:
+         resp = '{"result": "issue indexing....is elastic id correct and server ready?"}'
     print(resp['result'])
 
 def main(docs,index="samplerekog"):
