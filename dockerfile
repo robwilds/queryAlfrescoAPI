@@ -1,16 +1,23 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12.4-slim-bullseye
+FROM python:latest
 
 WORKDIR /python-docker
 
 COPY . .
-RUN pip3 install -r requirements.txt
 
-RUN apt-get update && \
+RUN pip install -r requirements.txt
+
+RUN apt-get update && \ 
     apt-get install -y vim && \
-    apt-get install -y iputils-ping && \
+    #apt-get install -y iputils-ping && \
     apt-get install -y curl && \
+    apt install build-essential -y && \
+    apt-get install manpages-dev -y && \
+    pip install --upgrade pip && \
+    pip install llama-cpp-python && \
+    pip install llama-cpp-agent && \
     rm -rf /var/lib/apt/lists/*
+
 
 CMD [ "python3", "app.py"]
