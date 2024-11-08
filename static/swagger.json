@@ -217,13 +217,13 @@
         ]
       }
     },
-    "/analyzetext": {
+    "/chat": {
       "post": {
         "tags": [
         ],
-        "summary": "analyze raw text with LLama3.2",
+        "summary": "Chat with LLama3.2 1b",
         
-        "description": "raw text posted to this endpoint will be passed to LLama for sentiment detection",
+        "description": "test chat with llama3.2 1b...other models can be used",
        
         "produces": [
           "application/json"
@@ -231,16 +231,25 @@
         
         "parameters": [
           {
-            "name": "formData",
+            "name": "prompt",
             "in": "body",
             "description": "JSON payload",
-            "required": true
+            "required": false,
+            "schema": {"type":"string"}
+          },
+          {
+            "name": "question",
+            "in": "body",
+            "description": "JSON payload",
+            "required": false,
+            "schema": {"type":"string"}
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
+              "type":"string"
             }
           },
           "400": {

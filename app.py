@@ -11,6 +11,7 @@ from flask import Flask,jsonify,Response,request,redirect
 from flask_cors import CORS, cross_origin
 from flask_swagger_ui import get_swaggerui_blueprint
 import elastic.sendDatatoElastic as elastic
+import llama.llamaChat as chat
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -57,12 +58,12 @@ def clearelastic():
 def getcomments(nodeid):
     return Response(getCommentsForNode.getComments(nodeid))
 
-@app.route("/analyzetext",methods = ['POST','OPTIONS'])
+@app.route("/chat",methods = ['POST','OPTIONS'])
 @cross_origin()
-def analyzetext():
+def chat():
     #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
-    print("\nanalyze text not implemented")
-    return Response("not implemented yet")
+    print("Calling Llama chat with local model\nanswer: \n")
+    return Response(request.data)
 
 @app.route("/createfileplan",methods = ['POST','OPTIONS'])
 @cross_origin()
