@@ -233,14 +233,14 @@
           {
             "name": "prompt",
             "in": "body",
-            "description": "JSON payload",
+            "description": "prompt",
             "required": false,
             "schema": {"type":"string"}
           },
           {
             "name": "question",
             "in": "body",
-            "description": "JSON payload",
+            "description": "question for chat",
             "required": false,
             "schema": {"type":"string"}
           }
