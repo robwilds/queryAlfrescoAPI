@@ -44,6 +44,5 @@ response = agent.get_chat_response(
     print_output=False
 )
 
-
 for chunk in response:
     print(chunk)

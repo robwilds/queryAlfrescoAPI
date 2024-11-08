@@ -4,10 +4,16 @@ docker rmi wildsdocker/queryalfapi:v3 --force
 
 docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/queryalfapi:v3 .
 
-
+# run with connect to files
 docker run -d -it -p 9600:9600 \
 --name queryAlfAPIv3 \
 --mount type=bind,source=$(pwd),target=/python-docker \
 wildsdocker/queryalfapi:v3
+
+# run without connect to files
+docker run -d -it -p 9600:9600 \
+--name queryAlfAPIv3 \
+wildsdocker/queryalfapi:v3
+
 
 docker push wildsdocker/queryalfapi:v3
