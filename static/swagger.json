@@ -231,18 +231,11 @@
         
         "parameters": [
           {
-            "name": "prompt",
+            "name": "prompt and question",
             "in": "body",
-            "description": "prompt",
-            "required": false,
-            "schema": {"type":"string"}
-          },
-          {
-            "name": "question",
-            "in": "body",
-            "description": "question for chat",
-            "required": false,
-            "schema": {"type":"string"}
+            "description": "example:  {\"prompt\":\"hey you\",\"question\":\"where are you\"}",
+            "required": true,
+            "schema": {"type":"array"}
           }
         ],
         "responses": {

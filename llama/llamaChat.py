@@ -4,11 +4,11 @@ from llama_cpp_agent.providers import LlamaCppPythonProvider
 from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
 
-def chat(prt,chat):
+def chat(prt,question):
 
     responseOut = ""
 
-    SYSTEM_PROMPT = "analyze sentiment" #Customize system prompt to fit your need
+    SYSTEM_PROMPT = prt #"analyze sentiment" #Customize system prompt to fit your need
     CHAT_TEMPLATE = MessagesFormatterType.LLAMA_3  #Prompt format to use
     MODEL_PATH = "./llama/llama-3.2-1b-instruct-q4_k_m.gguf" #Llama-3.2-1B-Instruct-Q4_K_M.gguf used for chat bot style interaction https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
     TEMPERATURE=0.3  #For small models, low temperature is often better
@@ -37,10 +37,10 @@ def chat(prt,chat):
         debug_output=False
     )
 
-    prompt = "does this sound positive or negative: I don't like bananas"
+    question = question#"does this sound positive or negative: I don't like bananas"
 
     response = agent.get_chat_response(
-        prompt,
+        question,
         llm_sampling_settings=settings,
         #chat_history=chat_history, Not useful here but to be used if you want to keep track of previous prompts
         returns_streaming_generator=True,

@@ -58,13 +58,6 @@ def clearelastic():
 def getcomments(nodeid):
     return Response(getCommentsForNode.getComments(nodeid))
 
-@app.route("/chat",methods = ['POST','OPTIONS'])
-@cross_origin()
-def chat():
-    #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
-    print("Calling Llama chat with local model\nanswer: \n")
-    return Response(aichat.chat('nothing','nothing'))
-
 @app.route("/createfileplan",methods = ['POST','OPTIONS'])
 @cross_origin()
 def createFilePlan():
@@ -73,6 +66,14 @@ def createFilePlan():
     #return Response(request.get_json())
     
     return Response(CFP.main(request.get_json()))
+
+@app.route("/chat",methods = ['POST','OPTIONS'])
+@cross_origin()
+def chat():
+    #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
+    print("Calling Llama chat with local model\nanswer: \n"+str(request.get_json()['prompt']))
+    return Response(aichat.chat(str(request.get_json()['prompt']),str(request.get_json()['question'])))
+    #return Response(str(request.get_json()))
 
 if __name__ == "__main__":
 
@@ -83,7 +84,8 @@ if __name__ == "__main__":
     config={  # Swagger UI config overrides
         'app_name': "Test application"
     }
-)
+    )
+    
     app.register_blueprint(swaggerui_blueprint)
 
     # Please do not set debug=True in production
