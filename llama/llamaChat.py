@@ -5,9 +5,12 @@ from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
 
 def chat(prt,chat):
+
+    responseOut = ""
+
     SYSTEM_PROMPT = "analyze sentiment" #Customize system prompt to fit your need
     CHAT_TEMPLATE = MessagesFormatterType.LLAMA_3  #Prompt format to use
-    MODEL_PATH = "Llama-3.2-1B-Instruct-Q4_K_M.gguf" #Llama-3.2-1B-Instruct-Q4_K_M.gguf used for chat bot style interaction https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
+    MODEL_PATH = "./llama/llama-3.2-1b-instruct-q4_k_m.gguf" #Llama-3.2-1B-Instruct-Q4_K_M.gguf used for chat bot style interaction https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
     TEMPERATURE=0.3  #For small models, low temperature is often better
     MAX_NEW_TOKENS = 1024  #Max tokens to output
     CONTEXT_WINDOW=8000 #Max context window. Up to 128k. The higher the value, the more GPU memory you will need
@@ -19,7 +22,6 @@ def chat(prt,chat):
         n_gpu_layers=N_GPU_LAYERS,
         n_batch=N_BATCH,
         n_ctx=CONTEXT_WINDOW
-
     )
 
     provider = LlamaCppPythonProvider(llm)
@@ -47,7 +49,9 @@ def chat(prt,chat):
 
     for chunk in response:
         print(chunk)
-        response = response + '\n'
+        responseOut = responseOut + chunk
 
+    return responseOut
 
-    return response
+if __name__ == '__main__':
+    chat('no prompt','no chat')
