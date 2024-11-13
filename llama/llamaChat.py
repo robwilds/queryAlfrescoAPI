@@ -17,12 +17,17 @@ def chat(prt,question):
     N_GPU_LAYERS=-1  #Number of layers to put on GPU. -1 = all
     N_BATCH=1024  #Increase if long prompts and you need faster inference.
 
-    llm = Llama(
-        model_path=MODEL_PATH,
-        n_gpu_layers=N_GPU_LAYERS,
-        n_batch=N_BATCH,
-        n_ctx=CONTEXT_WINDOW
-    )
+    # llm = Llama(
+    #     model_path=MODEL_PATH,
+    #     n_gpu_layers=N_GPU_LAYERS,
+    #     n_batch=N_BATCH,
+    #     n_ctx=CONTEXT_WINDOW
+    # )
+
+    llm = Llama.from_pretrained(
+	repo_id="hugging-quants/Llama-3.2-1B-Instruct-Q4_K_M-GGUF",
+	filename="llama-3.2-1b-instruct-q4_k_m.gguf",
+)
 
     provider = LlamaCppPythonProvider(llm)
     settings = provider.get_provider_default_settings()
@@ -54,4 +59,4 @@ def chat(prt,question):
     return responseOut
 
 if __name__ == '__main__':
-    chat('no prompt','no chat')
+    chat('sentiment detector','I do not like bananas')

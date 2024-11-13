@@ -17,6 +17,7 @@ RUN apt-get update && \
     pip install --upgrade pip && \
     pip install llama-cpp-python && \
     pip install llama-cpp-agent && \
+    pip install huggingface-hub && \
     rm -rf /var/lib/apt/lists/*
 
 
