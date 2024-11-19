@@ -12,6 +12,7 @@ from flask_cors import CORS, cross_origin
 from flask_swagger_ui import get_swaggerui_blueprint
 import elastic.sendDatatoElastic as elastic
 import llama.llamaChat as aichat
+import llama.llamaVision
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -73,6 +74,13 @@ def chat():
     #https://medium.com/@penkow/how-to-run-llama-2-locally-on-cpu-docker-image-731eae6398d1
     print("Calling Llama chat with local model\nanswer: \n"+str(request.get_json()['prompt']))
     return Response(aichat.chat(str(request.get_json()['prompt']),str(request.get_json()['question'])))
+    #return Response(str(request.get_json()))
+
+@app.route("/vision",methods = ['POST','OPTIONS'])
+@cross_origin()
+def vision():
+    #print("Calling Llama vision with local model\nanswer: \n"+str(request.get_json()['prompt']))
+    return Response(llama.llamaVision.llamavision(str(request.get_json()['prompt']),str(request.get_json()['image'])))
     #return Response(str(request.get_json()))
 
 if __name__ == "__main__":

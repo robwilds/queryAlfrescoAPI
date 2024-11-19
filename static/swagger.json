@@ -258,6 +258,48 @@
           }
         ]
       }
+    },
+    "/vision": {
+      "post": {
+        "tags": [
+        ],
+        "summary": "Use LLama3.2 11b vision to analyze image based on URL",
+        
+        "description": "You must refer to jpegs for this to work properly from Alfresco despite vision allowing other formats",
+       
+        "produces": [
+          "application/json"
+        ],
+        
+        "parameters": [
+          {
+            "name": "prompt and image",
+            "in": "body",
+            "description": "example:  {\"prompt\":\"describe this image please\",\"image\":\"http://imageurl.jpg\"}",
+            "required": true,
+            "schema": {"type":"array"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type":"string"
+            }
+          },
+          "400": {
+            "description": "payload not correct"
+          },
+          "404": {
+            "description": "some other issue"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
     
   }
