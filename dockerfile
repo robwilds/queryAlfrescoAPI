@@ -18,6 +18,8 @@ RUN apt-get update && \
     pip install llama-cpp-python && \
     pip install llama-cpp-agent && \
     pip install huggingface-hub && \
+    pip install torch && \
+    pip install transformers && \
     rm -rf /var/lib/apt/lists/*
 
 
