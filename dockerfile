@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:latest
+FROM python:3.12.4
 
 WORKDIR /python-docker
 
@@ -18,7 +18,7 @@ RUN apt-get update && \
     pip install llama-cpp-python && \
     pip install llama-cpp-agent && \
     pip install huggingface-hub && \
-    pip install torch && \
+    pip install torch==2.5.1 torchvision===0.20.1 && \
     pip install transformers && \
     rm -rf /var/lib/apt/lists/*
 

@@ -275,7 +275,7 @@
           {
             "name": "prompt and image",
             "in": "body",
-            "description": "example:  {\"prompt\":\"describe this image please\",\"image\":\"http://imageurl.jpg\"}",
+            "description": "example:  {\"prompt\":\"describe this image please\",\"image\":\"https://www.stockvault.net/data/2020/01/25/272807/preview16.jpg\"}",
             "required": true,
             "schema": {"type":"array"}
           }
