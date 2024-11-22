@@ -1,4 +1,4 @@
-# This docker-compose file will spin up an ACS community installation on a local host.
+# This Docker Compose file will spin up an ACS community installation on a local host.
 # It requires at least 6GB of memory available to distribute among containers.
 #
 # For performance tuning, increase each container mem_limit and give a percentage of
@@ -7,9 +7,6 @@
 # More details here:
 # https://www.oracle.com/technetwork/java/javase/10-relnote-issues-4108729.html
 #
-# Using version 2 as 3 does not support resource constraint options
-# (cpu_*, mem_* limits) for non swarm mode in Compose
-version: "2"
 services:
   queryalfapi:
     image: wildsdocker/queryalfapi:v3
@@ -31,7 +28,7 @@ services:
       baseFilePlanQuery: '{"query": {"query": "select * from rma:filePlan","language": "cmis"}}'
   alfresco:
     #image: docker.io/alfresco/alfresco-content-repository-community:23.3.0
-    image: docker.io/alfresco/alfresco-governance-repository-community:23.3.0
+    image: docker.io/alfresco/alfresco-governance-repository-community:23.4.0
     mem_limit: 1900m
     environment:
       JAVA_TOOL_OPTIONS: >-
@@ -67,13 +64,7 @@ services:
         -XX:MinRAMPercentage=50
         -XX:MaxRAMPercentage=80
     healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-",
-        ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-"]
       interval: 30s
       timeout: 3s
       retries: 5
@@ -105,7 +96,7 @@ services:
         condition: service_healthy
   share:
     #image: docker.io/alfresco/alfresco-share:23.3.2
-    image: docker.io/alfresco/alfresco-governance-share-community:23.3.0
+    image: docker.io/alfresco/alfresco-governance-share-community:23.4.0
     mem_limit: 1g
     environment:
       CSRF_FILTER_ORIGIN: http://localhost:8080
@@ -179,17 +170,7 @@ services:
       - "61616:61616" # OpenWire
       - "61613:61613" # STOMP
     healthcheck:
-      test:
-        [
-          "CMD",
-          "/opt/activemq/bin/activemq",
-          "query",
-          "--objname",
-          "type=Broker,brokerName=*,service=Health",
-          "|",
-          "grep",
-          "Good",
-        ]
+      test: ["CMD", "/opt/activemq/bin/activemq", "query", "--objname", "type=Broker,brokerName=*,service=Health", "|", "grep", "Good"]
       interval: 10s
       timeout: 5s
       retries: 5
