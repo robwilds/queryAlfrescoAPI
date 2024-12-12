@@ -7,9 +7,12 @@ import json
 import time
 from dotenv import load_dotenv
 
-es = Elasticsearch(
-  cloud_id=os.getenv("elasticcloudid"),#config['ELASTIC']['cloud_id'],
-  http_auth=(os.getenv("elasticuser"), os.getenv("elasticpassword")))
+try:
+  es = Elasticsearch(
+    cloud_id=os.getenv("elasticcloudid"),#config['ELASTIC']['cloud_id'],
+    http_auth=(os.getenv("elasticuser"), os.getenv("elasticpassword")))
+except:
+    print("issue with setting up elastic")
 
 def gendata(docs,optype="index",ind="samplerekog"):
     #docs = [{"name": "Rob", "tag": "male"},{"name": "Rob", "tag": "weapon"}]
@@ -31,7 +34,7 @@ def clearIndexes(ind="samplerekog"):
             statusMessage = es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
     except:
             statusMessage = "issue clearing"
-    
+
     return(statusMessage)
 
 def sendIndRecToelastic(doc,id):
@@ -45,7 +48,7 @@ def sendIndRecToelastic(doc,id):
         print(resp['result'])
     except:
         print("issue indexing doc: "+str(doc) + "id: "+str(id))
-    
+
 
 def main(docs,index="samplerekog"):
 
@@ -88,7 +91,7 @@ def main(docs,index="samplerekog"):
             "index": "{indexpass}",
             "doc": [{doc}]
         }}'''.format(doc=docs,optype="index",indexpass=index)
-  
+
   #print ('\ndocs info-> '+ newDoc)
 
   #print('\ncalling helpers bulk**')
@@ -96,6 +99,6 @@ def main(docs,index="samplerekog"):
   #print(json.loads(docs))
   #helpers.bulk(es, json.load(docs))
   #time.sleep(10)
-   
+
 if __name__ == "__main__":
     main()

@@ -3,6 +3,9 @@ from llama_cpp_agent import LlamaCppAgent, MessagesFormatterType
 from llama_cpp_agent.providers import LlamaCppPythonProvider
 from llama_cpp_agent.chat_history import BasicChatHistory
 from llama_cpp_agent.chat_history.messages import Roles
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 def chat(prt,question):
 
@@ -17,16 +20,9 @@ def chat(prt,question):
     N_GPU_LAYERS=-1  #Number of layers to put on GPU. -1 = all
     N_BATCH=1024  #Increase if long prompts and you need faster inference.
 
-    # llm = Llama(
-    #     model_path=MODEL_PATH,
-    #     n_gpu_layers=N_GPU_LAYERS,
-    #     n_batch=N_BATCH,
-    #     n_ctx=CONTEXT_WINDOW
-    # )
-
     llm = Llama.from_pretrained(
-	repo_id="hugging-quants/Llama-3.2-1B-Instruct-Q4_K_M-GGUF",
-	filename="llama-3.2-1b-instruct-q4_k_m.gguf",
+	repo_id=os.getenv("llama_chat_repo"),
+	filename=os.getenv("llama_chat_filename"),
 )
 
     provider = LlamaCppPythonProvider(llm)

@@ -1,13 +1,18 @@
 import requests
-import os
 import torch
 from PIL import Image
 from transformers import MllamaForConditionalGeneration, AutoProcessor
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+os.environ["TOKENIZERS_PARALLELISM"] = "True"
+
 
 def llamavision(prompt,image):
     try:
-        model_id = "unsloth/Llama-3.2-11B-Vision-Instruct"
+        model_id = os.getenv("llama_vision_model")
+        #model_id = "meta-llama/Llama-3.2-11B-Vision-Instruct"
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # Proper device setup
 
         # Load the model
@@ -15,13 +20,13 @@ def llamavision(prompt,image):
             model_id,
             torch_dtype=torch.bfloat16
         )
-        model = model.to(device) 
+        model = model.to(device)
 
         # Load the processor
         processor = AutoProcessor.from_pretrained(model_id)
 
         # Load an image from the web
-        url = image #"https://huggingface.co/datasets/huggingface/documentation-images/resolve/0052a70beed5bf71b92610a43a52df6d286cd5f3/diffusers/rabbit.jpg"
+        url = image
         image = Image.open(requests.get(url, stream=True).raw)
 
         # Create a message list that includes an image and a text prompt
@@ -38,11 +43,13 @@ def llamavision(prompt,image):
 
         # Generate output from the model
         output = model.generate(**inputs, max_new_tokens=100)
-        print(processor.decode(output[0], skip_special_tokens=True))
+        screenoutput = processor.decode(output[0], skip_special_tokens=True)
+        print(screenoutput)
 
-        return(processor.decode(output[0], skip_special_tokens=True))
-    except:
-        return('error')
+        return(screenoutput)
+    except Exception as e:
+        print ('error-> '+ str(e))
+        return('error-> '+ str(e))
 
 if __name__ == '__main__':
-    llamavision('what is happening in this picture?','http://localhost:9600/static/cce157f5-eb2b-4223-a157-f5eb2bb22362.jpg')
+    llamavision('what is happening in this picture?','https://live.staticflickr.com/65535/54172543481_2c463a309e_6k.jpg')
