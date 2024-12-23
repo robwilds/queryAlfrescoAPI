@@ -44,6 +44,7 @@ def llamavision(prompt,image):
         # Generate output from the model
         output = model.generate(**inputs, max_new_tokens=100)
         screenoutput = processor.decode(output[0], skip_special_tokens=True)
+        print('printing screen output --> ')
         print(screenoutput)
 
         return(screenoutput)
