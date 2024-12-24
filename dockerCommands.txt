@@ -8,6 +8,7 @@ docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/que
 docker run -d -it -p 9600:9600 \
 --name queryAlfAPIv3 \
 --mount type=bind,source=$(pwd),target=/python-docker \
+-v $(pwd)/data/LLMs/:/root/.cache/ \
 wildsdocker/queryalfapi:v3
 
 # run without connect to files
