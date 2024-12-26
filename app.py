@@ -13,6 +13,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 import elastic.sendDatatoElastic as elastic
 import llama.llamaChat as aichat
 import llama.llamaVision
+import microsoft.microsoftVision
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -76,11 +77,12 @@ def chat():
     return Response(aichat.chat(str(request.get_json()['prompt']),str(request.get_json()['question'])))
     #return Response(str(request.get_json()))
 
-@app.route("/vision",methods = ['POST','OPTIONS'])
+@app.route("/msvision",methods = ['POST','OPTIONS'])
 @cross_origin()
-def vision():
+def msvision():
     #print("Calling Llama vision with local model\nanswer: \n"+str(request.get_json()['prompt']))
-    return Response(llama.llamaVision.llamavision(str(request.get_json()['prompt']),str(request.get_json()['image'])))
+    #return Response(llama.llamaVision.llamavision(str(request.get_json()['prompt']),str(request.get_json()['image'])))
+    return Response(microsoft.microsoftVision.msVision(str(request.get_json()['prompt']),str(request.get_json()['image'])))
     #return Response(str(request.get_json()))
 
 if __name__ == "__main__":

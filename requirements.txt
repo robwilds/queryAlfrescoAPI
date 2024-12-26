@@ -8,3 +8,14 @@ elasticsearch==8.14.0
 elasticsearch-async==6.2.0
 pandas
 openpyxl
+huggingface-hub
+llama-cpp-agent
+llama-cpp-python
+torch==2.5.1
+torchvision===0.20.1
+transformers
+#openai
+einops
+timm
+#accelerate
+#opencv-python

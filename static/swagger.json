@@ -259,13 +259,13 @@
         ]
       }
     },
-    "/vision": {
+    "/msvision": {
       "post": {
         "tags": [
         ],
-        "summary": "Use LLama3.2 11b vision to analyze image based on URL",
+        "summary": "Use Microsoft Vision to create caption of image",
         
-        "description": "You must refer to jpegs for this to work properly from Alfresco despite vision allowing other formats",
+        "description": "You must refer to jpegs for this to work properly from Alfresco despite vision allowing other formats\nThis uses microsoft/florence-2-base by default",
        
         "produces": [
           "application/json"
@@ -275,7 +275,7 @@
           {
             "name": "prompt and image",
             "in": "body",
-            "description": "example:  {\"prompt\":\"describe this image please\",\"image\":\"https://www.stockvault.net/data/2020/01/25/272807/preview16.jpg\"}",
+            "description": "example:  {\"prompt\":\"\\<CAPTION\\>\",\"image\":\"https://www.stockvault.net/data/2020/01/25/272807/preview16.jpg\"}\nYou can use \\<OD\\> to get labels and boundary boxes\nuse \\<MORE_DETAILED_CAPTION\\> to get better caption detail\nmore info: https://huggingface.co/microsoft/Florence-2-base",
             "required": true,
             "schema": {"type":"array"}
           }

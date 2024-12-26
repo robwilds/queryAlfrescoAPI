@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 #FROM python:3.12.4
-FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04
+#FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04
+FROM ubuntu:24.04
 
 WORKDIR /python-docker
 
@@ -17,15 +18,15 @@ RUN \
   apt-get install -y vim && \
   #apt-get install -y iputils-ping && \
   #apt-get install -y curl && \
-  apt install build-essential -y && \
-  apt-get install manpages-dev -y && \
+  #apt install build-essential -y && \
+  #apt-get install manpages-dev -y && \
   #pip3 install --upgrade pip && \
-  pip3 install llama-cpp-python --break-system-packages && \
-  pip3 install llama-cpp-agent --break-system-packages && \
-  pip3 install huggingface-hub --break-system-packages && \
-  pip3 install torch==2.5.1 torchvision===0.20.1 --break-system-packages && \
-  pip3 install transformers --break-system-packages && \
-  pip3 install openai einops timm accelerate opencv-python --break-system-packages && \
+  #pip3 install llama-cpp-python --break-system-packages && \
+  #pip3 install llama-cpp-agent --break-system-packages && \
+  #pip3 install huggingface-hub --break-system-packages && \
+  #pip3 install torch==2.5.1 torchvision===0.20.1 --break-system-packages && \
+  #pip3 install transformers --break-system-packages && \
+  #pip3 install openai einops timm accelerate opencv-python --break-system-packages && \
   rm -rf /var/lib/apt/lists/*
 
 

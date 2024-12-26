@@ -1,3 +1,6 @@
+#LLM cache
+data/
+
 # Git
 .git
 .gitignore
