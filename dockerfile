@@ -4,6 +4,7 @@
 #FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04
 FROM ubuntu:24.04
 
+
 WORKDIR /python-docker
 
 COPY . .
@@ -15,7 +16,7 @@ RUN pip3 install -r requirements.txt --break-system-packages
 
 RUN \
   #apt-get update && \
-  apt-get install -y vim && \
+  #apt-get install -y vim && \
   #apt-get install -y iputils-ping && \
   #apt-get install -y curl && \
   #apt install build-essential -y && \

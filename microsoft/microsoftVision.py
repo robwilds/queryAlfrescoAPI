@@ -9,36 +9,40 @@ load_dotenv()
 #this is used to get info for images
 
 def msVision(prt,img):
-    print("\nmicrosoft model is -> "+ os.getenv("microsoft_model") )
 
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+    try:
+        print("\nmicrosoft model is -> "+ os.getenv("microsoft_model") )
 
-    model = AutoModelForCausalLM.from_pretrained(os.getenv("microsoft_model"), torch_dtype=torch_dtype, trust_remote_code=True).to(device)
-    processor = AutoProcessor.from_pretrained(os.getenv("microsoft_model"), trust_remote_code=True)
+        device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-    prompt = prt
+        model = AutoModelForCausalLM.from_pretrained(os.getenv("microsoft_model"), torch_dtype=torch_dtype, trust_remote_code=True).to(device)
+        processor = AutoProcessor.from_pretrained(os.getenv("microsoft_model"), trust_remote_code=True)
 
-    #url = img
-    print('opening image')
-    image = Image.open(requests.get(img, stream=True).raw)
+        prompt = prt
 
-    inputs = processor(text=prompt, images=image, return_tensors="pt").to(device, torch_dtype)
+        #url = img
+        print('opening image')
+        image = Image.open(requests.get(img, stream=True).raw)
 
-    generated_ids = model.generate(
-        input_ids=inputs["input_ids"],
-        pixel_values=inputs["pixel_values"],
-        max_new_tokens=500,
-        do_sample=False,
-        num_beams=3,
-    )
-    generated_text = processor.batch_decode(generated_ids, skip_special_tokens=False)[0]
+        inputs = processor(text=prompt, images=image, return_tensors="pt").to(device, torch_dtype)
 
-    parsed_answer = processor.post_process_generation(generated_text, task=prompt, image_size=(image.width, image.height))
+        generated_ids = model.generate(
+            input_ids=inputs["input_ids"],
+            pixel_values=inputs["pixel_values"],
+            max_new_tokens=500,
+            do_sample=False,
+            num_beams=3,
+        )
+        generated_text = processor.batch_decode(generated_ids, skip_special_tokens=False)[0]
 
-    print(json.dumps(parsed_answer))
+        parsed_answer = processor.post_process_generation(generated_text, task=prompt, image_size=(image.width, image.height))
 
-    return (json.dumps(parsed_answer))
+        print(json.dumps(parsed_answer))
+
+        return (json.dumps(parsed_answer))
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     msVision('<MORE_DETAILED_CAPTION>','https://live.staticflickr.com/65535/54157051527_8fa4f6af98_6k.jpg')

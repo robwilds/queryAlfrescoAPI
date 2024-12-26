@@ -10,7 +10,6 @@
 services:
   queryalfapi:
     image: wildsdocker/queryalfapi:v3
-    restart: always
     ports:
       - 9600:9600
     volumes:
@@ -19,9 +18,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
+          memory: 8G
         reservations:
-          memory: 256M
+          memory: 8G
     environment:
       BASE_URL: "http://alfresco:8080"
       API_URL: "/static/swagger.json"
