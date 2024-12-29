@@ -233,7 +233,7 @@
           {
             "name": "prompt and question",
             "in": "body",
-            "description": "example:  {\"prompt\":\"hey you\",\"question\":\"where are you\"}",
+            "description": "example:  {\"prompt\":\"statistics\",\"question\":\"What caused the great depression?\"}",
             "required": true,
             "schema": {"type":"array"}
           }

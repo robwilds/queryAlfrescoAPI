@@ -15,9 +15,9 @@ run from the command line from the root of the project: pip3 install -r requirem
 
 ## Environment Setup
 
-This project is inteded to run as a container (see docker-compose.yml).  within said file are environment variables that should be altered to fit your application
+This project is intended to run as a container (see docker-compose.yml).  within said file are environment variables that should be altered to fit your application
 
-You can also reate a .env file in the root of the project.  There's a envTemplate.txt file that can be used as a starter.
+You can also create a .env file in the root of the project.  There's a envTemplate.txt file that can be used as a starter.  You only need this if you are running the pythyon app locally on your laptop
 
 ## Process Flow
 
