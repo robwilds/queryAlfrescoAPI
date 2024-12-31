@@ -20,7 +20,7 @@ services:
         limits:
           memory: 8G
         reservations:
-          memory: 8G
+          memory: 1G
     environment:
       BASE_URL: "http://alfresco:8080"
       API_URL: "/static/swagger.json"
