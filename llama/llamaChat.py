@@ -49,9 +49,10 @@ def chat(prt,question):
     )
 
     for chunk in response:
-        print(chunk)
+        
         responseOut = responseOut + chunk
 
+    print ("response: " + responseOut)
     return responseOut
 
 if __name__ == '__main__':
