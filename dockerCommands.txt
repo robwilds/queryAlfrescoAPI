@@ -4,9 +4,6 @@ docker rmi wildsdocker/queryalfapi:v3 --force
 
 docker buildx build --load --platform=linux/amd64,linux/arm64 -t wildsdocker/queryalfapi:v3 .
 
-#build for arm only
-docker buildx build --load --platform=linux/arm64 -t wildsdocker/queryalfapi:v3 .
-
 
 # run with connect to files
 docker run -d -it -p 9600:9600 \
