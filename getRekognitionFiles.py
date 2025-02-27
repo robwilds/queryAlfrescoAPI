@@ -123,25 +123,28 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
   for entry in pullListofrekogfiles()['list']['entries']:
     try: 
-      #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
-      rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
-      rekogName.append(entry['entry']['name'])
-      #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
-      rekogLabels.append(getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
-      #print('Tag value from caller -> ' + getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
-      #added to identify hyland employees
-      #print ('\\n\\n debug for schema:textLines -> '+ str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
-      #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:textLines'])
-      rekogParent.append(entry['entry']['parentId'])
-      rekogNodeId.append(entry['entry']['id'])
-      rekogModifiedDate.append(entry['entry']['modifiedAt'])
+      if ( ".jpg" in str(entry['entry']['name'])):
+        #print('node-> ' + entry['entry']['id'] + ' labels-> ' + str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])) #debugging
+        rekogSrc.append(requestURL+'static/' + downloadImages(entry['entry']['id'],path))
+        rekogName.append(entry['entry']['name'])
+        #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:label'])
+        rekogLabels.append(getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+        #print('Tag value from caller -> ' + getTagValue(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+        #added to identify hyland employees
+        #print ('\\n\\n debug for schema:textLines -> '+ str(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['cm:taggable']))
+        #rekogLabels.append(getrekogfilesinfo(entry['entry']['id'])['entry']['properties']['schema:textLines'])
+        rekogParent.append(entry['entry']['parentId'])
+        rekogNodeId.append(entry['entry']['id'])
+        rekogModifiedDate.append(entry['entry']['modifiedAt'])
 
-      # So we have all the information now, but we need to build the elastic payload for each record
-      #for index in range(len(rekogLabels)):
-      
-      #print('label list ->' + str(rekogLabels).split(','))
+        # So we have all the information now, but we need to build the elastic payload for each record
+        #for index in range(len(rekogLabels)):
+        
+        #print('label list ->' + str(rekogLabels).split(','))
 
-      #print('split info for labels -> \n')
+        #print('split info for labels -> \n')
+      else:
+        print ("skipping as not a jpg file..." + str(entry['entry']['id']))
     except:
       print ("issue with an image..skipping " + str(entry['entry']['id']) )
 
