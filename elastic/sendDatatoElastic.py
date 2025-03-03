@@ -8,11 +8,20 @@ import time
 from dotenv import load_dotenv
 
 try:
-  es = Elasticsearch(
-    cloud_id=os.getenv("elasticcloudid"),#config['ELASTIC']['cloud_id'],
-    http_auth=(os.getenv("elasticuser"), os.getenv("elasticpassword")))
+
+
+    if (os.getenv("elasticapikey") == 'local'):
+        print("using local elastic")
+        es = Elasticsearch(
+            hosts="http://localhost:9200",
+        )
+    else:
+        es = Elasticsearch(
+        cloud_id=os.getenv("elasticcloudid"),#config['ELASTIC']['cloud_id'],
+        http_auth=(os.getenv("elasticuser"), os.getenv("elasticpassword")))
 except:
-    print("issue with setting up elastic")
+    print("issue with setting up elastic for api key: " + os.getenv("elasticapikey"))
+
 
 def gendata(docs,optype="index",ind="samplerekog"):
     #docs = [{"name": "Rob", "tag": "male"},{"name": "Rob", "tag": "weapon"}]
@@ -30,12 +39,15 @@ def clearIndexes(ind="samplerekog"):
     #clear the index(ces)
     indices = [ind]
 
-    try:
-            statusMessage = es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
-    except:
-            statusMessage = "issue clearing"
+    stat = ""
 
-    return(statusMessage)
+    try:
+            print ("trying to clear elastic indexes")
+            stat = es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
+    except:
+            statusMessage = "issue clearing..maybe the index doesn't exist"
+
+    return(stat)
 
 def sendIndRecToelastic(doc,id):
     """ doc = {
@@ -66,9 +78,9 @@ def main(docs,index="samplerekog"):
   #indices = [index]
   #es.delete_by_query(index=indices, body={"query": {"match_all": {}}})
 
-  #print ("es info -> " + str(es.info()))
+  print ("es info -> " + str(es.info())) #debug
 
-  """ data = [
+  dummydata = """ data = [
     {
         "_index": "samplerekog",
         "doc" : {"name": "Rob","tag":"office"}

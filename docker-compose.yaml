@@ -29,7 +29,7 @@ services:
       devpath: "../src/assets/"
       prodpath: "./static/"
       port: "9600"
-      elasticapikey: ""
+      elasticapikey: "local"
       elasticcloudid: "123445"
       elasticuser: "enterprise_search"
       elasticpassword: "hylandforce1"
