@@ -32,6 +32,7 @@ services:
       prodpath: "./static/"
       port: "9600"
       elasticapikey: "local"
+      elastichost: "http://localhost:9200"
       elasticcloudid: "123445"
       elasticuser: "enterprise_search"
       elasticpassword: "hylandforce1"
