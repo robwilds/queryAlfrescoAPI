@@ -117,7 +117,7 @@ def main(requestURL="Http://localllll/"): #the hardcode url is in place for runn
 
   #print('search result --> ' + json.dumps(pullListofrekogfiles())) #debug
   #now loop and get all images to download and populate data frame columns
-  counter = 1
+  counter = 1 # the counter is used as the index for elastic
   #clear indexes in elastic now
   #send2Elastic.clearIndexes()
 

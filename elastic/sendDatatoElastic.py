@@ -13,8 +13,10 @@ try:
     if (os.getenv("elasticapikey") == 'local'):
         print("using local elastic")
         es = Elasticsearch(
-            hosts="http://localhost:9200",
+            hosts=os.getenv("elastichost"),
         )
+
+        print ('using local elastic -> ' + os.getenv("elastichost"))
     else:
         es = Elasticsearch(
         cloud_id=os.getenv("elasticcloudid"),#config['ELASTIC']['cloud_id'],
@@ -55,11 +57,14 @@ def sendIndRecToelastic(doc,id):
     'tag': 'male'
 } """
 
+    resp=""
+
     try:
         resp = es.index(index="samplerekog", id=id, document=doc)
         print(resp['result'])
     except:
         print("issue indexing doc: "+str(doc) + "id: "+str(id))
+        print("response is - " + str(resp))
 
 
 def main(docs,index="samplerekog"):
