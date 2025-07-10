@@ -15,39 +15,30 @@
   },
   "host": "",
   "basePath": "/",
-  "tags": [
-  ],
-  "schemes": [
-    "http"
-  ],
+  "tags": [],
+  "schemes": ["http"],
   "paths": {
     "/getcomments/{nodeid}": {
       "parameters": [
-          {
-            "in": "path",
-              "name": "nodeid",
-              "description": "alfresco document nodeid",
-              "required": true,
-            "type": "string"
-          }
-        ],
+        {
+          "in": "path",
+          "name": "nodeid",
+          "description": "alfresco document nodeid",
+          "required": true,
+          "type": "string"
+        }
+      ],
       "get": {
         "summary": "gets comments for a given node",
-        
+
         "description": "",
         "operationId": "",
-        "consumes": [
-          ""
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": [""],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-                
-            }
+            "schema": {}
           }
         }
       }
@@ -57,34 +48,23 @@
         "summary": "gets users and associated groups",
         "description": "",
         "operationId": "",
-        "consumes": [
-          ""
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": [""],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-                
-            }
+            "schema": {}
           }
         }
       }
     },
     "/auditentryfornode": {
       "get": {
-        
         "summary": "Get audit entry for a node",
         "description": "JSON response provided with audit entries for a given node.  ",
         "operationId": "nodeid",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "query",
@@ -111,18 +91,12 @@
         "summary": "show enabled audit apps",
         "description": "",
         "operationId": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-          }
-        ],
+        "produces": ["application/json"],
+        "parameters": [{}],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-            }
+            "schema": {}
           },
           "400": {
             "description": "Invalid status value"
@@ -134,38 +108,29 @@
       "get": {
         "summary": "get all AI:Labels files",
         "description": "get JSON response of all files with aspect AI:Labels and download the jpeg to the static folder on the server",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {}
-        ],
+        "produces": ["application/json"],
+        "parameters": [{}],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-            }
+            "schema": {}
           },
           "400": {
             "description": "Invalid tag value"
           }
         },
-        "security": [
-        ]
+        "security": []
       }
     },
     "/createfileplan": {
       "post": {
-        "tags": [
-        ],
+        "tags": [],
         "summary": "create file plan based on json input",
-        
+
         "description": "JSON provided from csv spreadsheet via angular application to create file plan.  \n The spreadsheet is based on NARA GRS CSV file\nHere's the json payload that must be fed to this end point:\n [{\n\"GRSID\": \"GRS_1.1.001\",\n \"RecordTitle\": \"Financial management and reporting administrative records\",\n\"ClassificationGeneral\": \"Financial Management\",\n\"LegalCitation\": \"\",\n\"Disposition\": \"Temporary\",\n\"RetentionYears\": \"3\",\n\"RetentionType\": \"Creation_Age\",\n\"EventTypeGeneral\": \"\",\n\"LongerRetentionAuthorized\": \"Yes\",\n\"DeviationsAllowed\": \"Yes\",\n\"FullDispositionInstruction\": \"Destroy when 3 years old but longer retention is authorized if needed for business use.\",\n\"DispositionAuthority\": \"DAA-GRS-2016-0013-0001\",\n\"Supersededby\": \"\",\n\"LastUpdated\": \"23-Jun\",\n\"Comments\": \"6/2023: Corrected GRS ID.\"}]",
-       
-        "produces": [
-          "application/json"
-        ],
-        
+
+        "produces": ["application/json"],
+
         "parameters": [
           {
             "name": "formData",
@@ -177,8 +142,7 @@
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-            }
+            "schema": {}
           },
           "400": {
             "description": "payload not correct"
@@ -193,56 +157,48 @@
           }
         ]
       }
-    },"/clearelastic": {
+    },
+    "/clearelastic": {
       "get": {
         "summary": "clears the elastic indexes to start the reporting fresh",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {}
-        ],
+        "produces": ["application/json"],
+        "parameters": [{}],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-            }
+            "schema": {}
           },
           "400": {
             "description": "Invalid response"
           }
         },
-        "security": [
-        ]
+        "security": []
       }
     },
     "/chat": {
       "post": {
-        "tags": [
-        ],
-        "summary": "Chat with LLama3.2 1b",
-        
-        "description": "test chat with llama3.2 1b...other models can be used",
-       
-        "produces": [
-          "application/json"
-        ],
-        
+        "tags": [],
+        "summary": "Chat with LLama3.2 3b",
+
+        "description": "test chat with llama3.2 3b...other models can be used if you change the environment variables\nfirst time running this will take a minute or so as the model is downloaded",
+
+        "produces": ["application/json"],
+
         "parameters": [
           {
             "name": "prompt and question",
             "in": "body",
             "description": "example:  {\"prompt\":\"statistics\",\"question\":\"What caused the great depression?\"}",
             "required": true,
-            "schema": {"type":"array"}
+            "schema": { "type": "array" }
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type":"string"
+              "type": "string"
             }
           },
           "400": {
@@ -261,30 +217,27 @@
     },
     "/msvision": {
       "post": {
-        "tags": [
-        ],
+        "tags": [],
         "summary": "Use Microsoft Vision to create caption of image",
-        
+
         "description": "You must refer to jpegs for this to work properly from Alfresco despite vision allowing other formats\nThis uses microsoft/florence-2-base by default",
-       
-        "produces": [
-          "application/json"
-        ],
-        
+
+        "produces": ["application/json"],
+
         "parameters": [
           {
             "name": "prompt and image",
             "in": "body",
             "description": "example:  {\"prompt\":\"\\<CAPTION\\>\",\"image\":\"https://www.stockvault.net/data/2020/01/25/272807/preview16.jpg\"}\nYou can use \\<OD\\> to get labels and boundary boxes\nuse \\<MORE_DETAILED_CAPTION\\> to get better caption detail\nmore info: https://huggingface.co/microsoft/Florence-2-base",
             "required": true,
-            "schema": {"type":"array"}
+            "schema": { "type": "array" }
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type":"string"
+              "type": "string"
             }
           },
           "400": {
@@ -301,9 +254,7 @@
         ]
       }
     }
-    
-  }
-,
+  },
   "externalDocs": {
     "description": "Find out more about Swagger",
     "url": "http://swagger.io"

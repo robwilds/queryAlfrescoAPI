@@ -1,6 +1,10 @@
 #LLM cache
 data/
 
+#ignore test images in static folder
+static/*.jpg
+static/*.jpeg
+
 # Git
 .git
 .gitignore

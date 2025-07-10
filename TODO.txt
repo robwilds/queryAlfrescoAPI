@@ -1,4 +1,4 @@
 add environment entries for huggingface api key or any other api keys
 make sure models auto-download
 add entries to swagger
-
+add option to select gguf model in prompt json

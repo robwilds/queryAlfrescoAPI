@@ -2,6 +2,8 @@ from queryAlf import runQuery
 import pandas as pd, json
 import os
 from dotenv import load_dotenv
+from datetime import datetime,timezone
+from zoneinfo import ZoneInfo
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -26,20 +28,35 @@ def pullAuditEntryForNode(nodeid):
 
     print ('query url is: ' + auditEntryforNodeQuery + ' with userpass: '+ user+passwd) #debug
     data=runQuery('get',auditEntryforNodeQuery,'',user,passwd)
-    print ("data returned is: " + str(data)) #debug
+    print ("data from nodequery returned is: " + json.dumps(data)) #debug
     return data
 
 def pullAuditEntryDetailsForNode(auditentryid):
 
-    auditEntryDetailsForNodeQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/audit-applications/alfresco-access/audit-entries/'+str(auditentryid)+'?fields=values'
+    auditEntryDetailsForNodeQuery = BASE_URL + '/alfresco/api/-default-/public/alfresco/versions/1/audit-applications/alfresco-access/audit-entries/'+str(auditentryid)+''
 
     data=runQuery('get',auditEntryDetailsForNodeQuery,'',user,passwd)
 
+    print('data from entry detailsfornode: '+ json.dumps(data))
+
     #See if the actual action data can be returned
-    actionDetailsForNode = data['entry']['values']['/alfresco-access/transaction/action']
+    actionDetailsForNode = data['entry']['values']['/alfresco-access/transaction/action'] #
+    #actionDetailsForNode = data['entry']['values']['/alfresco-access/transaction/sub-actions']
     actionUserForNode = data['entry']['values']['/alfresco-access/transaction/user']
 
     return [actionDetailsForNode,actionUserForNode]
+
+def dateProcessor(date):
+
+    date_format = "%Y-%m-%dT%H:%M:%S.%f+0000"
+    local_tz = ZoneInfo("America/New_York")
+    
+    newDate = datetime.strptime(date,date_format)
+    #print ('inside dateprocessor: '+str(newDate)) #debug
+
+    print('local time zone '+ str(newDate.astimezone(local_tz)))
+
+    return str(newDate.astimezone(local_tz))
 
 def main(nodeid):
 
@@ -62,7 +79,7 @@ def main(nodeid):
 
         nodeID.append(nodeid) #this will be the same nodeid for each audit entry id
         appEntryID.append(entry['entry']['id'])
-        appEntryDate.append(entry['entry']['createdAt'])
+        appEntryDate.append(dateProcessor(entry['entry']['createdAt']))
         appEntryDetails.append(entryDetails) #this is coming from the pullauditdetailsentryfornode
         appEntryUser.append(entryUser) #this is coming from the pullauditdetailsentryfornode
     
@@ -70,15 +87,12 @@ def main(nodeid):
     auditentryfornodeDF = pd.DataFrame([nodeID,appEntryID,appEntryDate,appEntryDetails,appEntryUser]).T
     auditentryfornodeDF.rename(columns=cols,inplace=True)
 
-    
     print (auditentryfornodeDF)
     auditentryfornodeDF.to_excel('auditentryfornode.xlsx')
 
-
     return auditentryfornodeDF
-
 
 if __name__ == "__main__":
 
-    #nodeid = '0e0a3eba-3734-460f-a406-eb79eb6d2955' #testing node on rwilds232
-    main('bd7b45c0-5e60-4916-b4c1-fa93df39bbb6') #debug if this file is run directly not from flask app
+    #nodeid = '1a0b110f-1e09-4ca2-b367-fe25e4964a4e' #testing node on rwilds232
+    main('1a0b110f-1e09-4ca2-b367-fe25e4964a4e') #debug if this file is run directly not from flask app

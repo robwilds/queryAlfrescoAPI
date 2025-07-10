@@ -17,5 +17,8 @@ transformers==4.47.1
 #openai
 einops==0.8.0
 timm==1.0.12
+tzdata==2025.1
+python-dateutil==2.9.0.post0
+tqdm==4.67.1
 #accelerate
 #opencv-python

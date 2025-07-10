@@ -38,7 +38,7 @@ def chat(prt,question):
         debug_output=False
     )
 
-    question = question#"does this sound positive or negative: I don't like bananas"
+    question = question #"does this sound positive or negative: I don't like bananas"
 
     response = agent.get_chat_response(
         question,
